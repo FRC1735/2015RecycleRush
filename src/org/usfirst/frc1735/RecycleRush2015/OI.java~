@@ -18,8 +18,10 @@ import org.usfirst.frc1735.RecycleRush2015.commands.Lifter2ToteSetpointGo;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterContainerSetpointGo;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterDropOrPickStackSetpointGo;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterDropStack;
+import org.usfirst.frc1735.RecycleRush2015.commands.LifterFingerEngage;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterFingerDisengage;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterRatchetMove;
+import org.usfirst.frc1735.RecycleRush2015.commands.LifterMove;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -91,6 +93,8 @@ public class OI {
         SmartDashboard.putData("Lifter Move", new LifterMove());
 
         SmartDashboard.putData("Lifter Ratchet Move", new LifterRatchetMove());
+
+        SmartDashboard.putData("Lifter Finger Engage", new LifterFingerEngage());
 
         SmartDashboard.putData("Lifter Finger Disengage", new LifterFingerDisengage());
 
