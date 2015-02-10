@@ -12,11 +12,12 @@
 package org.usfirst.frc1735.RecycleRush2015.subsystems;
 
 import org.usfirst.frc1735.RecycleRush2015.Robot;
-import org.usfirst.frc1735.RecycleRush2015.commands.DriveWithJoysticks;
 import org.usfirst.frc1735.RecycleRush2015.RobotMap;
-import org.usfirst.frc1735.RecycleRush2015.commands.*;
+import org.usfirst.frc1735.RecycleRush2015.commands.DriveWithJoysticks;
 
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 

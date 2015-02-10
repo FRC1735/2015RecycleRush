@@ -11,7 +11,17 @@
 
 package org.usfirst.frc1735.RecycleRush2015;
 
-import org.usfirst.frc1735.RecycleRush2015.commands.*;
+import org.usfirst.frc1735.RecycleRush2015.commands.AutonomousCommand;
+import org.usfirst.frc1735.RecycleRush2015.commands.DriveWithLimits;
+import org.usfirst.frc1735.RecycleRush2015.commands.Lifter1ToteSetpointGo;
+import org.usfirst.frc1735.RecycleRush2015.commands.Lifter2ToteSetpointGo;
+import org.usfirst.frc1735.RecycleRush2015.commands.LifterContainerSetpointGo;
+import org.usfirst.frc1735.RecycleRush2015.commands.LifterDropOrPickStackSetpointGo;
+import org.usfirst.frc1735.RecycleRush2015.commands.LifterDropStack;
+import org.usfirst.frc1735.RecycleRush2015.commands.LifterFingerEngage;
+import org.usfirst.frc1735.RecycleRush2015.commands.LifterFingerDisengage;
+import org.usfirst.frc1735.RecycleRush2015.commands.LifterRatchetMove;
+import org.usfirst.frc1735.RecycleRush2015.commands.LifterMove;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -84,9 +94,13 @@ public class OI {
 
         SmartDashboard.putData("Lifter Ratchet Move", new LifterRatchetMove());
 
-        SmartDashboard.putData("Lifter Finger Move", new LifterFingerMove());
+        SmartDashboard.putData("Lifter Finger Engage", new LifterFingerEngage());
+
+        SmartDashboard.putData("Lifter Finger Disengage", new LifterFingerDisengage());
 
         SmartDashboard.putData("Lifter Drop Or Pick Stack Setpoint Go", new LifterDropOrPickStackSetpointGo());
+
+        SmartDashboard.putData("Lifter Drop Stack", new LifterDropStack());
 
         SmartDashboard.putData("Lifter 1Tote Setpoint Go", new Lifter1ToteSetpointGo());
 

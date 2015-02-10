@@ -11,12 +11,14 @@
 
 package org.usfirst.frc1735.RecycleRush2015;
 
+import org.usfirst.frc1735.RecycleRush2015.commands.AutonomousCommand;
+import org.usfirst.frc1735.RecycleRush2015.subsystems.DriveTrain;
+import org.usfirst.frc1735.RecycleRush2015.subsystems.Lifter;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import org.usfirst.frc1735.RecycleRush2015.commands.*;
-import org.usfirst.frc1735.RecycleRush2015.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
