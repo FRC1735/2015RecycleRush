@@ -82,7 +82,7 @@ public class OI {
         runActiveLifter.whenPressed(new LifterActiveMode());
         dropStack = new JoystickButton(accessoryJoystick, 3);
         dropStack.whenPressed(new LifterDropStack());
-        liftto1ToteHeight = new JoystickButton(accessoryJoystick, 4);
+        liftto1ToteHeight = new JoystickButton(accessoryJoystick, 2);
         liftto1ToteHeight.whenPressed(new Lifter1ToteSetpointGo());
         rightJoystick = new Joystick(1);
         

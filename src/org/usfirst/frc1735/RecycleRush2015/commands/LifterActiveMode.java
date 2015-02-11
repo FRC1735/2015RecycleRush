@@ -35,6 +35,19 @@ public class LifterActiveMode extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	
+    	//TODO: fix to handle multiple button presses asking for the LifterActive command.
+    	// Normally a button press starts a command.  any previously running command using the same
+    	// subsystem gets interrupted/aborted.
+    	// In this case, since the command is long-running, the operator could press the button a second (or multiple)
+    	// times and cause the previously executing command loop to be aborted.  This would cause the lifter
+    	// to be re-activated to move to the position it's already at, which could churn the system and cause
+    	// the ratchet/pawl system to engage/disengage unnecessarily.
+    	// 
+    	// For this command, we do want it to be interrupted if the operator needs to override the system to do
+    	// something else... but we don't want two copies of this particular command running.
+    	// I think the answer is to look at the command queue to determine if a command of the same type is running,
+    	// and if it is... abort this instance (or have it exit without doing anything)
+    	
     	// The idea is to drive around with the "tote in place" sensor active.
     	// Wait until that sensor fires, and then drop the lifter to grab the tote on the fly...
     	// Start by getting the lifter into place to grab a single tote:
