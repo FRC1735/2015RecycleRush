@@ -56,7 +56,7 @@ public class  Lifter1ToteSetpointGo extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	// FIXME:  Just for safety, Should we engage the ratchet after completing the operation?
-    	// Robot.lifter.ratchetMove(Robot.m_ratchetEngagePosition);
+    	// Robot.lifter.ratchetMove(Robot.lifter.RATCHET_ENGAGED);
     	// TODO:  Find out if the subsystem is automatically disabled when reaching the setpoint.
     	//        I suspect it is not, and keeps running to maintain the setpoint until disabled.
     	//		  If so, then with the ratchet engaged we can disable the PID subsystem:

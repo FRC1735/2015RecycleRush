@@ -12,14 +12,16 @@
 package org.usfirst.frc1735.RecycleRush2015.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+
 import org.usfirst.frc1735.RecycleRush2015.Robot;
+import org.usfirst.frc1735.RecycleRush2015.RobotMap;
 
 /**
  *
  */
-public class  LifterFingerEngage extends Command {
+public class  WaitForToteSensor extends Command {
 
-    public LifterFingerEngage() {
+    public WaitForToteSensor() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 
@@ -31,7 +33,6 @@ public class  LifterFingerEngage extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.lifter.fingerEngage();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -40,7 +41,7 @@ public class  LifterFingerEngage extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return (!RobotMap.lifterToteReadyIndicator.get()); // normally input is pulled high and get returns true; grounded/false means it has been activated.
     }
 
     // Called once after isFinished returns true

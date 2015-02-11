@@ -41,9 +41,6 @@ public class Robot extends IterativeRobot {
     // Additional Member variables
     // High-pass filter.  Any joystick absolute value less than this should be clamped to zero.
     public static double m_joystickFilter = 0.15;
-    // servo settings for ratchet
-    public static double m_ratchetEngagePosition = 0;     // degrees
-    public static double m_ratchetDisengagePosition = 40; // degrees
 
     /**
      * This function is run when the robot is first started up and should be

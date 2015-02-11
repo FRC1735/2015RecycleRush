@@ -290,7 +290,7 @@ Children:
           default: '1'
           name: Button
           validators: null
-          value: '1'
+          value: '2'
         Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
           name: Joystick, validators: null, value: Accessory Joystick}
         When to Run: !!robotbuilder.data.properties.ChoicesProperty
@@ -315,6 +315,30 @@ Children:
           name: Button
           validators: null
           value: '3'
+        Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
+          name: Joystick, validators: null, value: Accessory Joystick}
+        When to Run: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id012
+          default: whileHeld
+          name: When to Run
+          validators: null
+          value: whenPressed
+    - Name: Run Active Lifter
+      Base: Joystick Button
+      Children: []
+      Properties:
+        Command: !!robotbuilder.data.properties.TypeSelectionProperty
+          default: None
+          name: Command
+          type: Command
+          validators: *id010
+          value: Lifter Active Mode
+        Button: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id011
+          default: '1'
+          name: Button
+          validators: null
+          value: '1'
         Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
           name: Joystick, validators: null, value: Accessory Joystick}
         When to Run: !!robotbuilder.data.properties.ChoicesProperty
@@ -388,6 +412,12 @@ Children:
         name: Requires, type: Subsystem, validators: null, value: Lifter}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
         name: Button on SmartDashboard, validators: null, value: true}
+  - Name: Lifter Active Mode
+    Base: Command Group
+    Children: []
+    Properties:
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: true}
   - Name: Lifter Drop Or Pick Stack Setpoint Go
     Base: Setpoint Command
     Children: []
@@ -448,6 +478,14 @@ Children:
         value: Lifter
       Setpoint: !!robotbuilder.data.properties.DoubleProperty {default: 1, name: Setpoint,
         validators: null, value: 2.0}
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: true}
+  - Name: Wait For Tote Sensor
+    Base: Command
+    Children: []
+    Properties:
+      Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
+        name: Requires, type: Subsystem, validators: null, value: Lifter}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
         name: Button on SmartDashboard, validators: null, value: true}
   Properties: {}
