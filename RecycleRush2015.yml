@@ -226,7 +226,7 @@ Children:
       Continuous: !!robotbuilder.data.properties.BooleanProperty {default: false,
         name: Continuous, validators: null, value: false}
       Default Command: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
-        name: Default Command, type: Command, validators: null, value: None}
+        name: Default Command, type: Command, validators: null, value: Lift With Joystick}
       Maximum Output: !!robotbuilder.data.properties.DoubleProperty {default: 1, name: Maximum Output,
         validators: null, value: 1.0}
       Limit Input: !!robotbuilder.data.properties.BooleanProperty {default: false,
@@ -380,6 +380,14 @@ Children:
     Properties:
       Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Requires, type: Subsystem, validators: null, value: Drive Train}
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: false}
+  - Name: Lift With Joystick
+    Base: Command
+    Children: []
+    Properties:
+      Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
+        name: Requires, type: Subsystem, validators: null, value: Lifter}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
         name: Button on SmartDashboard, validators: null, value: false}
   - Name: Lifter Move
