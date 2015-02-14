@@ -169,20 +169,32 @@ public class Lifter extends PIDSubsystem {
         // We need limit switches to protect top and bottom lifter movement!
         // Only move the motor if the requested direction is not in the same direction as a pressed limit switch.
         double magnitude = -joy; // Assumes positive voltage is upwards.
-        boolean isAtHighLimit = !RobotMap.lifterLimitHigh.get(); // get returns true for a 1.  I/O defaults to a 1 for diconnected, so we wire the switch so that pressed =0 (false)
-        boolean isAtLowLimit  = !RobotMap.lifterLimitLow.get();  // get returns true for a 1.  I/O defaults to a 1 for diconnected, so we wire the switch so that pressed =0 (false)
        
-        if (!(((magnitude > 0) & isAtHighLimit) |
-        		((magnitude < 0) & isAtLowLimit))) {
+        if (!(((magnitude > 0) && reachedHighLimit()) ||
+        	  ((magnitude < 0) && reachedLowLimit()))) {
         	// Here we are NOT asking to move higher, but the high limit is set... or lower, but the low limit is set... 
         	// So, we can move the motor
         	lifterMotor.set(magnitude); 
        }
         // Otherwise, we have hit a limit switch and are requesting to go even further.
         // Ignore the request and just return.
-        
-        
-
     }
+    
+    public boolean reachedHighLimit() {
+    	// Digital IO reads a '1'/true when nothing is connected.
+    	// If the switch gets ripped out, we want to continue operations, so we want "ok to move" to be ==1
+    	// Therefore 'hit limit' should be ==0 (meaning return the opposite of what we read)
+    	// Assumes switch wiring is momentary contact = grounded
+    	return (!RobotMap.lifterLimitHigh.get());
+    }
+
+    public boolean reachedLowLimit() {
+    	// Digital IO reads a '1'/true when nothing is connected.
+    	// If the switch gets ripped out, we want to continue operations, so we want "ok to move" to be ==1
+    	// Therefore 'hit limit' should be ==0 (meaning return the opposite of what we read)
+    	// Assumes switch wiring is momentary contact = grounded
+    	return (!RobotMap.lifterLimitLow.get());
+    }
+
 
 }
