@@ -43,7 +43,7 @@ public class CollectorRoller extends Subsystem {
     
     public void engage(double magnitudeDirection) {
     	intakeMotorLeft.set(magnitudeDirection);
-    	intakeMotorRight.set(-magnitudeDirection); // Assumes the left and right motors are mirrored
+    	intakeMotorRight.set(magnitudeDirection); // Assumes the left and right motors are mirrored
     }
     
 }

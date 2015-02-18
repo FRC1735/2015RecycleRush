@@ -59,7 +59,7 @@ public class DriveTrain extends Subsystem {
         if (Math.abs(driveLeft) < Robot.m_joystickFilter) {driveLeft = 0;}
         if (Math.abs(driveRight) < Robot.m_joystickFilter) {driveRight = 0;}
        
-        this.tankDrive(driveLeft, driveRight);
+        this.tankDrive(-driveLeft, -driveRight);
     }
     
     // This is just a wrapper so the joystick and direct methods live in the same class for consistency.

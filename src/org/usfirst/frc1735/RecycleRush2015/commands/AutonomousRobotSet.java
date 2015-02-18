@@ -37,6 +37,6 @@ public class AutonomousRobotSet extends CommandGroup {
     	
     	// A Robot Set consists of driving forward far enough to be completely
     	// contained within the Auto Zone.
-    	addSequential(new DriveWithLimits(2, 20)); // drive for 2 seconds or 20 feet, whichever comes first
+    	addSequential(new DriveWithLimits(5, 9, 0.75)); // drive for 10 seconds or 20 feet, whichever comes first.  Go at 50% power.
     }
 }

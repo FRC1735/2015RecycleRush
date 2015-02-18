@@ -19,7 +19,7 @@ import org.usfirst.frc1735.RecycleRush2015.Robot;
  */
 public class  CollectDeployUp extends Command {
 	public CollectDeployUp(){
-		this(0.5); // if called without args (as with a button press) default timeout to 0.5 sec
+		this(3); // if called without args (as with a button press) default timeout to 0.5 sec
 	}
 	
 
@@ -40,14 +40,16 @@ public class  CollectDeployUp extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.collectorDeployer.deployMove(1); //Assume that positive is upwards
+    	Robot.collectorDeployer.deployMove(0.75, true); //Assume that positive is upwards.  second arg true=ignore limit switches
    }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	boolean reachedLimit = Robot.collectorDeployer.reachedUpLimit();
-    	boolean finished = (isTimedOut() || reachedLimit);
-        return finished;
+    	// This function is for manual override only.  Ignore the limits in case the pot gets messed up!!!
+    	//boolean finished = (isTimedOut() || reachedLimit);
+        //return finished;
+    	return isTimedOut();
     }
 
     // Called once after isFinished returns true

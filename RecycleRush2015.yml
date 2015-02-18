@@ -48,7 +48,7 @@ Children:
             value: '1'
       Properties:
         Left Motor Inverted: !!robotbuilder.data.properties.BooleanProperty {default: false,
-          name: Left Motor Inverted, validators: null, value: true}
+          name: Left Motor Inverted, validators: null, value: false}
         Right Motor Inverted: !!robotbuilder.data.properties.BooleanProperty {default: false,
           name: Right Motor Inverted, validators: null, value: false}
         Sensitivity: !!robotbuilder.data.properties.DoubleProperty {default: 0.5,
@@ -80,15 +80,15 @@ Children:
           default: kRate
           name: PID Source
           validators: null
-          value: kRate
+          value: kDistance
         Distance Per Pulse: !!robotbuilder.data.properties.DoubleProperty {default: 1,
-          name: Distance Per Pulse, validators: null, value: 1.0}
+          name: Distance Per Pulse, validators: null, value: 0.00277777777}
         Encoding Type: !!robotbuilder.data.properties.ChoicesProperty
           choices: &id005 [k4X, k2X, k1X]
           default: k4X
           name: Encoding Type
           validators: null
-          value: k4X
+          value: k1X
         Channel B Channel (Digital): !!robotbuilder.data.properties.ChoicesProperty
           choices: &id006 ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
             '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22',
@@ -96,7 +96,7 @@ Children:
           default: '0'
           name: Channel B Channel (Digital)
           validators: &id007 [DigitalChannel]
-          value: '8'
+          value: '6'
         Channel A Channel (Digital): !!robotbuilder.data.properties.ChoicesProperty
           choices: &id008 ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
             '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22',
@@ -104,9 +104,9 @@ Children:
           default: '0'
           name: Channel A Channel (Digital)
           validators: &id009 [DigitalChannel]
-          value: '7'
+          value: '5'
         Reverse Direction: !!robotbuilder.data.properties.BooleanProperty {default: false,
-          name: Reverse Direction, validators: null, value: false}
+          name: Reverse Direction, validators: null, value: true}
     - Name: Right Motor Encoder
       Base: Quadrature Encoder
       Children: []
@@ -116,27 +116,27 @@ Children:
           default: kRate
           name: PID Source
           validators: null
-          value: kRate
+          value: kDistance
         Distance Per Pulse: !!robotbuilder.data.properties.DoubleProperty {default: 1,
-          name: Distance Per Pulse, validators: null, value: 1.0}
+          name: Distance Per Pulse, validators: null, value: 0.00277777777}
         Encoding Type: !!robotbuilder.data.properties.ChoicesProperty
           choices: *id005
           default: k4X
           name: Encoding Type
           validators: null
-          value: k4X
+          value: k1X
         Channel B Channel (Digital): !!robotbuilder.data.properties.ChoicesProperty
           choices: *id006
           default: '0'
           name: Channel B Channel (Digital)
           validators: *id007
-          value: '10'
+          value: '8'
         Channel A Channel (Digital): !!robotbuilder.data.properties.ChoicesProperty
           choices: *id008
           default: '0'
           name: Channel A Channel (Digital)
           validators: *id009
-          value: '9'
+          value: '7'
         Reverse Direction: !!robotbuilder.data.properties.BooleanProperty {default: false,
           name: Reverse Direction, validators: null, value: false}
     Properties:
@@ -154,7 +154,7 @@ Children:
           default: Talon
           name: Type
           validators: null
-          value: TalonSRX
+          value: VictorSP
         Output Channel (PWM): !!robotbuilder.data.properties.ChoicesProperty
           choices: *id002
           default: '0'
@@ -243,14 +243,14 @@ Children:
         Offset: !!robotbuilder.data.properties.DoubleProperty {default: 0, name: Offset,
           validators: null, value: 0.0}
         Input Channel (Analog): !!robotbuilder.data.properties.ChoicesProperty
-          choices: ['0', '1', '2', '3', '4', '5', '6', '7']
+          choices: &id014 ['0', '1', '2', '3', '4', '5', '6', '7']
           default: '0'
           name: Input Channel (Analog)
-          validators: [AnalogInput]
+          validators: &id015 [AnalogInput]
           value: '0'
         Full Range: !!robotbuilder.data.properties.DoubleProperty {default: 1, name: Full Range,
           validators: null, value: 10.0}
-    - Name: Finger Limit Switch Left
+    - Name: Limit High
       Base: Limit Switch
       Children: []
       Properties:
@@ -262,26 +262,6 @@ Children:
           name: Input Channel (Digital)
           validators: &id013 [DigitalChannel]
           value: '3'
-    - Name: Finger Limit Switch Right
-      Base: Limit Switch
-      Children: []
-      Properties:
-        Input Channel (Digital): !!robotbuilder.data.properties.ChoicesProperty
-          choices: *id012
-          default: '0'
-          name: Input Channel (Digital)
-          validators: *id013
-          value: '4'
-    - Name: Limit High
-      Base: Limit Switch
-      Children: []
-      Properties:
-        Input Channel (Digital): !!robotbuilder.data.properties.ChoicesProperty
-          choices: *id012
-          default: '0'
-          name: Input Channel (Digital)
-          validators: *id013
-          value: '5'
     - Name: Limit Low
       Base: Limit Switch
       Children: []
@@ -291,7 +271,7 @@ Children:
           default: '0'
           name: Input Channel (Digital)
           validators: *id013
-          value: '6'
+          value: '4'
     Properties:
       D: !!robotbuilder.data.properties.DoubleProperty {default: 0, name: D, validators: null,
         value: 0.0}
@@ -299,7 +279,7 @@ Children:
         default: 0
         name: Input
         type: PIDSource
-        validators: [ChildDropdownSelected]
+        validators: &id016 [ChildDropdownSelected]
         value: Lifter Lift Height Pot
       Limit Output: !!robotbuilder.data.properties.BooleanProperty {default: false,
         name: Limit Output, validators: null, value: false}
@@ -319,7 +299,7 @@ Children:
         default: 0
         name: Output
         type: PIDOutput
-        validators: [ChildDropdownSelected]
+        validators: &id017 [ChildDropdownSelected]
         value: Lifter Lifter Motor
       Minimum Input: !!robotbuilder.data.properties.DoubleProperty {default: 0, name: Minimum Input,
         validators: null, value: 0.0}
@@ -370,7 +350,7 @@ Children:
       Default Command: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Default Command, type: Command, validators: null, value: None}
   - Name: Collector Deployer
-    Base: Subsystem
+    Base: PID Subsystem
     Children:
     - Name: Deploy Motor
       Base: Speed Controller
@@ -388,29 +368,59 @@ Children:
           name: Output Channel (PWM)
           validators: *id003
           value: '8'
-    - Name: Limit Down
-      Base: Limit Switch
+    - Name: Deploy Pot
+      Base: Analog Potentiometer
       Children: []
       Properties:
-        Input Channel (Digital): !!robotbuilder.data.properties.ChoicesProperty
-          choices: *id012
+        Offset: !!robotbuilder.data.properties.DoubleProperty {default: 0, name: Offset,
+          validators: null, value: 0.0}
+        Input Channel (Analog): !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id014
           default: '0'
-          name: Input Channel (Digital)
-          validators: *id013
-          value: '11'
-    - Name: Limit Up
-      Base: Limit Switch
-      Children: []
-      Properties:
-        Input Channel (Digital): !!robotbuilder.data.properties.ChoicesProperty
-          choices: *id012
-          default: '0'
-          name: Input Channel (Digital)
-          validators: *id013
-          value: '12'
+          name: Input Channel (Analog)
+          validators: *id015
+          value: '1'
+        Full Range: !!robotbuilder.data.properties.DoubleProperty {default: 1, name: Full Range,
+          validators: null, value: 1.0}
     Properties:
+      D: !!robotbuilder.data.properties.DoubleProperty {default: 0, name: D, validators: null,
+        value: 0.0}
+      Input: !!robotbuilder.data.properties.ChildSelectionProperty
+        default: 0
+        name: Input
+        type: PIDSource
+        validators: *id016
+        value: Collector Deployer Deploy Pot
+      Limit Output: !!robotbuilder.data.properties.BooleanProperty {default: false,
+        name: Limit Output, validators: null, value: false}
+      F: !!robotbuilder.data.properties.DoubleProperty {default: 0, name: F, validators: null,
+        value: 0.0}
+      Tolerance: !!robotbuilder.data.properties.DoubleProperty {default: 0.2, name: Tolerance,
+        validators: null, value: 0.2}
+      Continuous: !!robotbuilder.data.properties.BooleanProperty {default: false,
+        name: Continuous, validators: null, value: false}
       Default Command: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Default Command, type: Command, validators: null, value: None}
+      Maximum Output: !!robotbuilder.data.properties.DoubleProperty {default: 1, name: Maximum Output,
+        validators: null, value: 1.0}
+      Limit Input: !!robotbuilder.data.properties.BooleanProperty {default: false,
+        name: Limit Input, validators: null, value: false}
+      Output: !!robotbuilder.data.properties.ChildSelectionProperty
+        default: 0
+        name: Output
+        type: PIDOutput
+        validators: *id017
+        value: Collector Deployer Deploy Motor
+      Minimum Input: !!robotbuilder.data.properties.DoubleProperty {default: 0, name: Minimum Input,
+        validators: null, value: 0.0}
+      Minimum Output: !!robotbuilder.data.properties.DoubleProperty {default: -1,
+        name: Minimum Output, validators: null, value: -1.0}
+      I: !!robotbuilder.data.properties.DoubleProperty {default: 0, name: I, validators: null,
+        value: 0.0}
+      P: !!robotbuilder.data.properties.DoubleProperty {default: 1, name: P, validators: null,
+        value: 1.0}
+      Maximum Input: !!robotbuilder.data.properties.DoubleProperty {default: 5, name: Maximum Input,
+        validators: null, value: 5.0}
   - Name: Collect Grasp
     Base: Subsystem
     Children:
@@ -442,25 +452,15 @@ Children:
     Children: []
     Properties:
       Number: !!robotbuilder.data.properties.ChoicesProperty
-        choices: &id014 ['0', '1', '2', '3', '4', '5']
+        choices: &id021 ['0', '1', '2', '3', '4', '5']
         default: 1
         name: Number
-        validators: &id015 [Joystick]
+        validators: &id022 [Joystick]
         value: '0'
   - Name: Right Joystick
     Base: Joystick
-    Children: []
-    Properties:
-      Number: !!robotbuilder.data.properties.ChoicesProperty
-        choices: *id014
-        default: 1
-        name: Number
-        validators: *id015
-        value: '1'
-  - Name: Accessory Joystick
-    Base: Joystick
     Children:
-    - Name: Lift to 1Tote Height
+    - Name: Roller In
       Base: Joystick Button
       Children: []
       Properties:
@@ -468,19 +468,149 @@ Children:
           default: None
           name: Command
           type: Command
-          validators: &id016 [TypeDropdownSelected]
-          value: Lifter 1Tote Setpoint Go
+          validators: &id018 [TypeDropdownSelected]
+          value: Collect Roller In
         Button: !!robotbuilder.data.properties.ChoicesProperty
-          choices: &id017 ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11',
+          choices: &id019 ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11',
             '12', '13', '14', '15', '16']
+          default: '1'
+          name: Button
+          validators: null
+          value: '1'
+        Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
+          name: Joystick, validators: null, value: Right Joystick}
+        When to Run: !!robotbuilder.data.properties.ChoicesProperty
+          choices: &id020 [whileHeld, whenPressed, whenReleased]
+          default: whileHeld
+          name: When to Run
+          validators: null
+          value: whileHeld
+    - Name: Roller Out
+      Base: Joystick Button
+      Children: []
+      Properties:
+        Command: !!robotbuilder.data.properties.TypeSelectionProperty
+          default: None
+          name: Command
+          type: Command
+          validators: *id018
+          value: Collect Roller Out
+        Button: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id019
+          default: '1'
+          name: Button
+          validators: null
+          value: '3'
+        Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
+          name: Joystick, validators: null, value: Right Joystick}
+        When to Run: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id020
+          default: whileHeld
+          name: When to Run
+          validators: null
+          value: whileHeld
+    - Name: Roller Stop
+      Base: Joystick Button
+      Children: []
+      Properties:
+        Command: !!robotbuilder.data.properties.TypeSelectionProperty
+          default: None
+          name: Command
+          type: Command
+          validators: *id018
+          value: Collect Roller Stop
+        Button: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id019
           default: '1'
           name: Button
           validators: null
           value: '2'
         Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
+          name: Joystick, validators: null, value: Right Joystick}
+        When to Run: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id020
+          default: whileHeld
+          name: When to Run
+          validators: null
+          value: whenPressed
+    Properties:
+      Number: !!robotbuilder.data.properties.ChoicesProperty
+        choices: *id021
+        default: 1
+        name: Number
+        validators: *id022
+        value: '1'
+  - Name: Accessory Joystick
+    Base: Joystick
+    Children:
+    - Name: Lift To 1Tote Height
+      Base: Joystick Button
+      Children: []
+      Properties:
+        Command: !!robotbuilder.data.properties.TypeSelectionProperty
+          default: None
+          name: Command
+          type: Command
+          validators: *id018
+          value: Lifter 1Tote Setpoint Go
+        Button: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id019
+          default: '1'
+          name: Button
+          validators: null
+          value: '4'
+        Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
           name: Joystick, validators: null, value: Accessory Joystick}
         When to Run: !!robotbuilder.data.properties.ChoicesProperty
-          choices: &id018 [whileHeld, whenPressed, whenReleased]
+          choices: *id020
+          default: whileHeld
+          name: When to Run
+          validators: null
+          value: whenPressed
+    - Name: Lift To 2Tote Height
+      Base: Joystick Button
+      Children: []
+      Properties:
+        Command: !!robotbuilder.data.properties.TypeSelectionProperty
+          default: None
+          name: Command
+          type: Command
+          validators: *id018
+          value: Lifter 2Tote Setpoint Go
+        Button: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id019
+          default: '1'
+          name: Button
+          validators: null
+          value: '3'
+        Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
+          name: Joystick, validators: null, value: Accessory Joystick}
+        When to Run: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id020
+          default: whileHeld
+          name: When to Run
+          validators: null
+          value: whenPressed
+    - Name: Lift Container To 1Tote Height
+      Base: Joystick Button
+      Children: []
+      Properties:
+        Command: !!robotbuilder.data.properties.TypeSelectionProperty
+          default: None
+          name: Command
+          type: Command
+          validators: *id018
+          value: Lifter Container Setpoint Go
+        Button: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id019
+          default: '1'
+          name: Button
+          validators: null
+          value: '5'
+        Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
+          name: Joystick, validators: null, value: Accessory Joystick}
+        When to Run: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id020
           default: whileHeld
           name: When to Run
           validators: null
@@ -493,18 +623,18 @@ Children:
           default: None
           name: Command
           type: Command
-          validators: *id016
+          validators: *id018
           value: Lifter Drop Stack
         Button: !!robotbuilder.data.properties.ChoicesProperty
-          choices: *id017
+          choices: *id019
           default: '1'
           name: Button
           validators: null
-          value: '3'
+          value: '2'
         Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
           name: Joystick, validators: null, value: Accessory Joystick}
         When to Run: !!robotbuilder.data.properties.ChoicesProperty
-          choices: *id018
+          choices: *id020
           default: whileHeld
           name: When to Run
           validators: null
@@ -517,28 +647,148 @@ Children:
           default: None
           name: Command
           type: Command
-          validators: *id016
+          validators: *id018
           value: Lifter Active Mode
         Button: !!robotbuilder.data.properties.ChoicesProperty
-          choices: *id017
+          choices: *id019
           default: '1'
           name: Button
           validators: null
-          value: '1'
+          value: '8'
         Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
           name: Joystick, validators: null, value: Accessory Joystick}
         When to Run: !!robotbuilder.data.properties.ChoicesProperty
-          choices: *id018
+          choices: *id020
           default: whileHeld
           name: When to Run
           validators: null
           value: whenPressed
+    - Name: Disable Active Lifter
+      Base: Joystick Button
+      Children: []
+      Properties:
+        Command: !!robotbuilder.data.properties.TypeSelectionProperty
+          default: None
+          name: Command
+          type: Command
+          validators: *id018
+          value: Lifter Active Disable
+        Button: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id019
+          default: '1'
+          name: Button
+          validators: null
+          value: '9'
+        Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
+          name: Joystick, validators: null, value: Accessory Joystick}
+        When to Run: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id020
+          default: whileHeld
+          name: When to Run
+          validators: null
+          value: whenPressed
+    - Name: PID Deploy Up
+      Base: Joystick Button
+      Children: []
+      Properties:
+        Command: !!robotbuilder.data.properties.TypeSelectionProperty
+          default: None
+          name: Command
+          type: Command
+          validators: *id018
+          value: Deploy Up Setpoint Go
+        Button: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id019
+          default: '1'
+          name: Button
+          validators: null
+          value: '6'
+        Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
+          name: Joystick, validators: null, value: Accessory Joystick}
+        When to Run: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id020
+          default: whileHeld
+          name: When to Run
+          validators: null
+          value: whenPressed
+    - Name: PID Deploy Down
+      Base: Joystick Button
+      Children: []
+      Properties:
+        Command: !!robotbuilder.data.properties.TypeSelectionProperty
+          default: None
+          name: Command
+          type: Command
+          validators: *id018
+          value: Deploy Down Setpoint Go
+        Button: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id019
+          default: '1'
+          name: Button
+          validators: null
+          value: '7'
+        Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
+          name: Joystick, validators: null, value: Accessory Joystick}
+        When to Run: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id020
+          default: whileHeld
+          name: When to Run
+          validators: null
+          value: whenPressed
+    - Name: Manual Deploy Up
+      Base: Joystick Button
+      Children: []
+      Properties:
+        Command: !!robotbuilder.data.properties.TypeSelectionProperty
+          default: None
+          name: Command
+          type: Command
+          validators: *id018
+          value: Collect Deploy Up
+        Button: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id019
+          default: '1'
+          name: Button
+          validators: null
+          value: '11'
+        Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
+          name: Joystick, validators: null, value: Accessory Joystick}
+        When to Run: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id020
+          default: whileHeld
+          name: When to Run
+          validators: null
+          value: whileHeld
+    - Name: Manual Deploy Down
+      Base: Joystick Button
+      Children: []
+      Properties:
+        Command: !!robotbuilder.data.properties.TypeSelectionProperty
+          default: None
+          name: Command
+          type: Command
+          validators: *id018
+          value: Collect Deploy Down
+        Button: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id019
+          default: '1'
+          name: Button
+          validators: null
+          value: '10'
+        Joystick: !!robotbuilder.data.properties.ParentProperty {default: parent,
+          name: Joystick, validators: null, value: Accessory Joystick}
+        When to Run: !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id020
+          default: whileHeld
+          name: When to Run
+          validators: null
+          value: whileHeld
     Properties:
       Number: !!robotbuilder.data.properties.ChoicesProperty
-        choices: *id014
+        choices: *id021
         default: 1
         name: Number
-        validators: *id015
+        validators: *id022
         value: '2'
   Properties: {}
 - Name: Commands
@@ -551,7 +801,7 @@ Children:
       Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Requires, type: Subsystem, validators: null, value: None}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: true}
+        name: Button on SmartDashboard, validators: null, value: false}
   - Name: Autonomous Command
     Base: Command
     Children: []
@@ -559,13 +809,19 @@ Children:
       Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Requires, type: Subsystem, validators: null, value: Drive Train}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: true}
+        name: Button on SmartDashboard, validators: null, value: false}
   - Name: Autonomous Robot Set
     Base: Command Group
     Children: []
     Properties:
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: true}
+        name: Button on SmartDashboard, validators: null, value: false}
+  - Name: Autonomous 3Tote Plus Container
+    Base: Command Group
+    Children: []
+    Properties:
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: false}
   - Name: Drive With Limits
     Base: Command
     Children: []
@@ -595,7 +851,7 @@ Children:
     Children: []
     Properties:
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: true}
+        name: Button on SmartDashboard, validators: null, value: false}
   - Name: Lifter Ratchet Move
     Base: Command
     Children: []
@@ -611,7 +867,7 @@ Children:
       Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Requires, type: Subsystem, validators: null, value: Lifter}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: true}
+        name: Button on SmartDashboard, validators: null, value: false}
   - Name: Lifter Finger Disengage
     Base: Command
     Children: []
@@ -619,11 +875,19 @@ Children:
       Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Requires, type: Subsystem, validators: null, value: Lifter}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: true}
+        name: Button on SmartDashboard, validators: null, value: false}
   - Name: Lifter Active Mode
     Base: Command Group
     Children: []
     Properties:
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: true}
+  - Name: Lifter Active Disable
+    Base: Command
+    Children: []
+    Properties:
+      Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
+        name: Requires, type: Subsystem, validators: null, value: Lifter}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
         name: Button on SmartDashboard, validators: null, value: true}
   - Name: Lifter Drop Or Pick Stack Setpoint Go
@@ -634,7 +898,7 @@ Children:
         componentName: PID Subsystem
         default: None
         name: Requires
-        validators: &id019 [TypeDropdownSelected]
+        validators: &id023 [TypeDropdownSelected]
         value: Lifter
       Setpoint: !!robotbuilder.data.properties.DoubleProperty {default: 1, name: Setpoint,
         validators: null, value: 0.0}
@@ -654,7 +918,7 @@ Children:
         componentName: PID Subsystem
         default: None
         name: Requires
-        validators: *id019
+        validators: *id023
         value: Lifter
       Setpoint: !!robotbuilder.data.properties.DoubleProperty {default: 1, name: Setpoint,
         validators: null, value: 1.1}
@@ -668,7 +932,7 @@ Children:
         componentName: PID Subsystem
         default: None
         name: Requires
-        validators: *id019
+        validators: *id023
         value: Lifter
       Setpoint: !!robotbuilder.data.properties.DoubleProperty {default: 1, name: Setpoint,
         validators: null, value: 2.0}
@@ -682,7 +946,7 @@ Children:
         componentName: PID Subsystem
         default: None
         name: Requires
-        validators: *id019
+        validators: *id023
         value: Lifter
       Setpoint: !!robotbuilder.data.properties.DoubleProperty {default: 1, name: Setpoint,
         validators: null, value: 2.0}
@@ -695,7 +959,7 @@ Children:
       Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Requires, type: Subsystem, validators: null, value: Lifter}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: true}
+        name: Button on SmartDashboard, validators: null, value: false}
   - Name: Collect Roller In
     Base: Command
     Children: []
@@ -703,7 +967,7 @@ Children:
       Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Requires, type: Subsystem, validators: null, value: Collector Roller}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: true}
+        name: Button on SmartDashboard, validators: null, value: false}
   - Name: Collect Roller Out
     Base: Command
     Children: []
@@ -711,7 +975,15 @@ Children:
       Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Requires, type: Subsystem, validators: null, value: Collector Roller}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: true}
+        name: Button on SmartDashboard, validators: null, value: false}
+  - Name: Collect Roller Stop
+    Base: Command
+    Children: []
+    Properties:
+      Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
+        name: Requires, type: Subsystem, validators: null, value: Collector Roller}
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: false}
   - Name: Collect Deploy Up
     Base: Command
     Children: []
@@ -719,13 +991,41 @@ Children:
       Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Requires, type: Subsystem, validators: null, value: Collector Deployer}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: true}
+        name: Button on SmartDashboard, validators: null, value: false}
   - Name: Collect Deploy Down
     Base: Command
     Children: []
     Properties:
       Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Requires, type: Subsystem, validators: null, value: Collector Deployer}
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: false}
+  - Name: Deploy Up Setpoint Go
+    Base: Setpoint Command
+    Children: []
+    Properties:
+      Requires: !!robotbuilder.data.properties.ComponentSelectionProperty
+        componentName: PID Subsystem
+        default: None
+        name: Requires
+        validators: *id023
+        value: Collector Deployer
+      Setpoint: !!robotbuilder.data.properties.DoubleProperty {default: 1, name: Setpoint,
+        validators: null, value: 1.0}
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: true}
+  - Name: Deploy Down Setpoint Go
+    Base: Setpoint Command
+    Children: []
+    Properties:
+      Requires: !!robotbuilder.data.properties.ComponentSelectionProperty
+        componentName: PID Subsystem
+        default: None
+        name: Requires
+        validators: *id023
+        value: Collector Deployer
+      Setpoint: !!robotbuilder.data.properties.DoubleProperty {default: 1, name: Setpoint,
+        validators: null, value: 0.0}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
         name: Button on SmartDashboard, validators: null, value: true}
   - Name: Collect Grasp In
@@ -735,7 +1035,7 @@ Children:
       Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Requires, type: Subsystem, validators: null, value: Collect Grasp}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: true}
+        name: Button on SmartDashboard, validators: null, value: false}
   - Name: Collect Grasp Out
     Base: Command
     Children: []
@@ -743,7 +1043,7 @@ Children:
       Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
         name: Requires, type: Subsystem, validators: null, value: Collect Grasp}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
-        name: Button on SmartDashboard, validators: null, value: true}
+        name: Button on SmartDashboard, validators: null, value: false}
   - Name: Delay
     Base: Command
     Children: []
@@ -752,6 +1052,30 @@ Children:
         name: Requires, type: Subsystem, validators: null, value: None}
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
         name: Button on SmartDashboard, validators: null, value: false}
+  - Name: Turn Downfield
+    Base: Command
+    Children: []
+    Properties:
+      Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
+        name: Requires, type: Subsystem, validators: null, value: Drive Train}
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: true}
+  - Name: Lifter Ratchet Engage
+    Base: Command
+    Children: []
+    Properties:
+      Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
+        name: Requires, type: Subsystem, validators: null, value: Lifter}
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: true}
+  - Name: Lifter Ratchet Disengage
+    Base: Command
+    Children: []
+    Properties:
+      Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
+        name: Requires, type: Subsystem, validators: null, value: Lifter}
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: true}
   Properties: {}
 Properties:
   Eclipse Workspace: !!robotbuilder.data.properties.FileProperty {default: 'C:\Users\sataylo1\workspace',

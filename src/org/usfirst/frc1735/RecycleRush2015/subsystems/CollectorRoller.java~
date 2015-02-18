@@ -40,5 +40,11 @@ public class CollectorRoller extends Subsystem {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
+    
+    public void engage(double magnitudeDirection) {
+    	intakeMotorLeft.set(magnitudeDirection);
+    	intakeMotorRight.set(magnitudeDirection); // Assumes the left and right motors are mirrored
+    }
+    
 }
 
