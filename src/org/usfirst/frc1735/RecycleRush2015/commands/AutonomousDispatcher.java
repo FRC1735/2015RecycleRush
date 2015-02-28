@@ -42,8 +42,43 @@ public class  AutonomousDispatcher extends Command {
             main_p = main;
             main.start();
         }
-        // Again, if we select '0' as an option we fall through the 'if' statements and do nothing.
-    	
+        // "Option 2" is to collect our container, our tote, and deliver both to the auto zone
+        // (Scoring our part of a robot set, a tote set, and a container set)
+        else if (Robot.AutoMode.getSelected().toString().equals("2")) {
+            Autonomous1TotePlusContainer main = new Autonomous1TotePlusContainer();
+            main_p = main;
+            main.start();
+        }
+        // "Option 3" is to collect our container, our tote, and the other two alliance totes, deliver all to the auto zone
+        // (Scoring our part of a robot set and a container set, plus all three totes as a tote stack set)
+        // Note:  This mode assumes the other alliance robots successfully moved the containers out of the way somehow
+        else if (Robot.AutoMode.getSelected().toString().equals("3")) {
+            Autonomous3TotePlusContainer main = new Autonomous3TotePlusContainer();
+            main_p = main;
+            main.start();
+        }
+        // "Option 4" is to collect our container, our tote, and the other two alliance totes,
+        //            move the other alliance containers "out of the way" and then deliver 3 totes + our container to the auto zone
+        // (Scoring our part of a robot set and a container set, plus all three totes as a tote stack set)
+        // Note:  This mode assumes the other alliance robots can't do anything but perhaps their part of the robot set.
+        else if (Robot.AutoMode.getSelected().toString().equals("4")) {
+            Autonomous3TotePlusContainerPlusMove2Container main = new Autonomous3TotePlusContainerPlusMove2Container();
+            main_p = main;
+            main.start();
+        }
+        // "Option 5" is to do absolutely everything ourselves:
+        //            collect our container, our tote, and the other two alliance totes,
+        //            plus move the other alliance totes INTO SCORING POSITION and then finally delivering 3 totes + our container to the auto zone
+        // (Scoring our part of a robot set, plus a full container set, plus all three totes as a tote stack set)
+        // Note:  This mode assumes the other alliance robots can't do anything but perhaps their part of the robot set.
+        else if (Robot.AutoMode.getSelected().toString().equals("5")) {
+            AutonomousGrandSlam main = new AutonomousGrandSlam();
+            main_p = main;
+            main.start();
+        }
+        else {
+                // Again, if we select '0' as an option we fall through the 'if' statements and do nothing.
+        }
     }
 
     // Called repeatedly when this Command is scheduled to run

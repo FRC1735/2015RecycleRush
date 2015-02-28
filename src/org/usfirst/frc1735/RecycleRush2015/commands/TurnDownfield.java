@@ -47,7 +47,10 @@ public class  TurnDownfield extends Command {
     protected void execute() {
     	// If red and blue are mirror images, compensate here.
     	// For now, assume we turn left
-    	Robot.driveTrain.tankDrive(-m_magnitudeDirection,  m_magnitudeDirection);
+    	RobotMap.driveTrainRobotDrive21.drive(0, -m_magnitudeDirection);
+    	// Alternately, call the drive object like this:
+    	//Robot.driveTrain.tankDrive(-m_magnitudeDirection,  m_magnitudeDirection);
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -61,11 +64,13 @@ public class  TurnDownfield extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.driveTrain.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
     // Member Variables
     double m_magnitudeDirection; 	// target speed/direction

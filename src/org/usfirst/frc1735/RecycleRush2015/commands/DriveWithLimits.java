@@ -46,13 +46,35 @@ public class  DriveWithLimits extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	// Drive until we hit one of the limits.
-    	// FIXME:  We need to figure out how to use the encoders here to ensure we are tracking straight!
-    	// Possible algo is to assume equal distance for both wheels, corrected continuously, will result in straight travel overall...
-    		// read both distances
-    		// reduce the faster motor by a percentage of the error difference
-    		// if the distances are equal, set the motors equal again
-    	// sort of like a cheap PID...?
-    	Robot.driveTrain.tankDrive(m_magnitudeDirection,  m_magnitudeDirection);
+    	double leftMagnitudeDirection = m_magnitudeDirection;
+    	double rightMagnitudeDirection = leftMagnitudeDirection;  // Initially set left and right to be the same value.
+    	
+    	if (m_enableDriveCompensation) {
+        	// Use the encoders here to ensure we are tracking straight!
+        	// Possible algo is to assume we must travel an equal distance for both wheels, which when corrected continuously, will result in straight travel overall...
+        		// read both distances
+        		// reduce the faster motor by a percentage of the error difference
+        		// if the distances are equal, set the motors equal again
+        	// sort of like a cheap PID...?
+            double currentLeftDistance = RobotMap.driveTrainLeftMotorEncoder.getDistance();
+            double currentRightDistance = RobotMap.driveTrainRightMotorEncoder.getDistance();
+            double leftTravel = Math.abs(currentLeftDistance - m_leftStartDistance);
+            double rightTravel = Math.abs(currentRightDistance - m_rightStartDistance);
+            double travelError = Math.abs(leftTravel - rightTravel);
+
+            if ( travelError > 0.1) {
+            	// If the error is greater than 0.1 (our assumed tolerance), then we need to compensate
+            	if (leftTravel > rightTravel) {
+            		// if left is farther, back it off by a percentage of the total error
+            		leftMagnitudeDirection  = leftMagnitudeDirection  * (1-(0.5 * travelError));
+            	}
+            	else {
+            		rightMagnitudeDirection = rightMagnitudeDirection * (1-(0.5 * travelError));
+            	}
+            } // end if (travelError)
+    	} // end if (m_enableDriveCompensation)
+    	
+    	Robot.driveTrain.tankDrive(leftMagnitudeDirection,  rightMagnitudeDirection);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -82,5 +104,6 @@ public class  DriveWithLimits extends Command {
     double m_distanceLimit;  		// target relative distance
     double m_leftStartDistance;		// starting absolute distance from encoder
     double m_rightStartDistance;	// starting absolute distance from encoder
+    boolean m_enableDriveCompensation = false; //Master enable for autonomous drive compensation to ensure robot tracks straight
 
 }

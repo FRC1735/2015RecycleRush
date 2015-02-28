@@ -27,14 +27,14 @@ public class Autonomous3TotePlusContainer extends CommandGroup {
     	// 3b) Roller in
     	addParallel(new CollectRollerIn());
     	// 3c) drive forward enough to grab tote (and auto-lift)
-    	addSequential(new DriveWithLimits(3, 0.5, 0.75)); // Time, Distance, speed
+    	addParallel(new DriveWithLimits(3, 0.5, 0.75)); // Time, Distance, speed
 	    // Now we have both our container and our tote.
 	    // Get everyone elses's totes!
 	    // This assumes that the other robots moved their containers out of the way.
     	// 4a) Arm lifter
     	addSequential(new LifterActiveMode());
 		// 4b) drive forward to get second tote
-    	addSequential(new DriveWithLimits(3, 3.5, 0.75)); // Time, Distance, speed
+    	addParallel(new DriveWithLimits(3, 3.5, 0.75)); // Time, Distance, speed
     	// Now we should have collected the second tote and lifted it.  Lather, rinse, repeat.
 		// 5) arm lifter
     	addSequential(new LifterActiveMode());
@@ -44,12 +44,12 @@ public class Autonomous3TotePlusContainer extends CommandGroup {
     	// Turn and go to the auto zone to complete our mission
 		// 7) Turn 90'
     	addSequential(new TurnDownfield());
-		// 8) Go forward 9' or so
+		// 8) Go forward into the Auto Zone
     	addSequential(new DriveWithLimits(3, 9, 0.75)); // Time, Distance, speed   	
 		// 9) Drop stack
     	addSequential(new LifterDropStack());
 		// 10) Back up 2 feet
-    	addSequential(new DriveWithLimits(3, 3.5, 0.75));  // Time, Distance, speed
+    	addSequential(new DriveWithLimits(3, 2, 0.75));  // Time, Distance, speed
     	// Done.
     	
     }

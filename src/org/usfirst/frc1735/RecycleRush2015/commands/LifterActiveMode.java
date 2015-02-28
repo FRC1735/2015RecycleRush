@@ -11,30 +11,20 @@
 
 package org.usfirst.frc1735.RecycleRush2015.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class LifterActiveMode extends CommandGroup {
     
-    public  LifterActiveMode() {
-        // Add Commands here:
-        // e.g. addSequential(new Command1());
-        //      addSequential(new Command2());
-        // these will run in order.
+    public LifterActiveMode() {
+    	this(1); // 1 = 1tote as the default.
+    }
+    public  LifterActiveMode(int type) {  
+    	// Send an "armed" indication to the SmartDashboard
+        SmartDashboard.putBoolean("Auto-Lift Armed", true);
 
-        // To run multiple commands at the same time,
-        // use addParallel()
-        // e.g. addParallel(new Command1());
-        //      addSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
-
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
-    	
     	//TODO: fix to handle multiple button presses asking for the LifterActive command.
     	// Normally a button press starts a command.  any previously running command using the same
     	// subsystem gets interrupted/aborted.
@@ -50,8 +40,17 @@ public class LifterActiveMode extends CommandGroup {
     	
     	// The idea is to drive around with the "tote in place" sensor active.
     	// Wait until that sensor fires, and then drop the lifter to grab the tote on the fly...
-    	// Start by getting the lifter into place to grab a single tote:
-    	addSequential(new Lifter1ToteSetpointGo());
+    	// Start by getting the lifter into place to grab a single tote.  or container.  depending on the arg...
+    	if (type == 1) {
+    		addSequential(new Lifter1ToteSetpointGo());
+    	}
+    	if (type == 2) {
+    		addSequential(new Lifter2ToteSetpointGo());
+    	}
+    	else {// if (type == 3) {
+    		addSequential(new LifterContainerSetpointGo());
+    	}
+    	
     	
     	// Next, start polling the banner sensor until it fires
     	// FIXME:  There must be a way to do this with interrupts...??
@@ -61,7 +60,15 @@ public class LifterActiveMode extends CommandGroup {
     	addSequential(new LifterDropOrPickStackSetpointGo());
     	
     	// ... and pick it up
-    	addSequential(new Lifter1ToteSetpointGo());
+    	if (type == 1) {
+    		addSequential(new Lifter1ToteSetpointGo());
+    	}
+    	if (type == 2) {
+    		addSequential(new Lifter2ToteSetpointGo());
+    	}
+    	else {// if (type == 3) {
+    		addSequential(new LifterContainerSetpointGo());
+    	}
     	
     	// At the end of this state, we are holding a tote and are in position to go do the sequence again
     	// Right now, force the operator to manually trigger the 'wait' state again...

@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class Autonomous3TotePlusContainer extends CommandGroup {
+public class Autonomous1TotePlusContainer extends CommandGroup {
     
-    public  Autonomous3TotePlusContainer() {
+    public  Autonomous1TotePlusContainer() {
 	    // The plan:
     	// 1) start with robot around our container (before match start)
     	// 2) lift container
@@ -29,26 +29,14 @@ public class Autonomous3TotePlusContainer extends CommandGroup {
     	// 3c) drive forward enough to grab tote (and auto-lift)
     	addParallel(new DriveWithLimits(3, 0.5, 0.75)); // Time, Distance, speed
 	    // Now we have both our container and our tote.
-	    // Get everyone elses's totes!
-	    // This assumes that the other robots moved their containers out of the way.
-    	// 4a) Arm lifter
-    	addSequential(new LifterActiveMode());
-		// 4b) drive forward to get second tote
-    	addParallel(new DriveWithLimits(3, 3.5, 0.75)); // Time, Distance, speed
-    	// Now we should have collected the second tote and lifted it.  Lather, rinse, repeat.
-		// 5) arm lifter
-    	addSequential(new LifterActiveMode());
-		// 6) driver forward to get third tote
-    	addSequential(new DriveWithLimits(3, 3.5, 0.75));  // Time, Distance, speed
-    	// Now we have three totes and a container
     	// Turn and go to the auto zone to complete our mission
-		// 7) Turn 90'
+		// 4) Turn 90'
     	addSequential(new TurnDownfield());
-		// 8) Go forward into the Auto Zone
+		// 5) Go forward into the Auto Zone
     	addSequential(new DriveWithLimits(3, 9, 0.75)); // Time, Distance, speed   	
-		// 9) Drop stack
+		// 6) Drop stack
     	addSequential(new LifterDropStack());
-		// 10) Back up 2 feet
+		// 7) Back up 2 feet
     	addSequential(new DriveWithLimits(3, 2, 0.75));  // Time, Distance, speed
     	// Done.
     	

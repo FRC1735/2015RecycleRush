@@ -10,21 +10,20 @@
 
 
 package org.usfirst.frc1735.RecycleRush2015.commands;
-
-import edu.wpi.first.wpilibj.command.Command;
-
 import org.usfirst.frc1735.RecycleRush2015.Robot;
 import org.usfirst.frc1735.RecycleRush2015.RobotMap;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class  TurnDownfield extends Command {
-
-	public TurnDownfield() {
+public class TurnInfield extends CommandGroup {
+    
+	public TurnInfield() {
 		this(0.75); //Default to turn at 75% speed
 	}
-	public TurnDownfield(double magnitudeDirection) {
+    public  TurnInfield(double magnitudeDirection) {
 
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -46,8 +45,10 @@ public class  TurnDownfield extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	// If red and blue are mirror images, compensate here.
-    	// For now, assume we turn left
-    	RobotMap.driveTrainRobotDrive21.drive(0, -m_magnitudeDirection);
+    	// For now, assume we turn right
+    	RobotMap.driveTrainRobotDrive21.drive(0, m_magnitudeDirection);
+    	// Alternately, call the drive object like this:
+    	//Robot.driveTrain.tankDrive(m_magnitudeDirection,  -m_magnitudeDirection);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -67,7 +68,6 @@ public class  TurnDownfield extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
     // Member Variables
     double m_magnitudeDirection; 	// target speed/direction

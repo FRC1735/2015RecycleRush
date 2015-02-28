@@ -38,7 +38,7 @@ public class  Lifter1ToteSetpointGo extends Command {
     	
     	//Make sure the fingers are engaged before lifting
     	Robot.lifter.fingerEngage();
-    	Robot.lifter.lifterMove(1.0);// arg is the desired setpoint.  Activates PID subsystem.
+    	Robot.lifter.lifterMove(1.0, System.currentTimeMillis()*1000);// arg is the desired setpoint.  Activates PID subsystem.
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -35,7 +35,7 @@ public class  LiftWithJoystick extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        Robot.lifter.liftWithJoystick(Robot.oi.getAccessoryJoystick());
+        Robot.lifter.liftWithJoystick(Robot.oi.getAccessoryJoystick(), timeSinceInitialized());
     }
 
     // Make this return true when this Command no longer needs to run execute()

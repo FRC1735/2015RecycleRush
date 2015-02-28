@@ -45,10 +45,10 @@ public class  CollectDeployUp extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	boolean reachedLimit = Robot.collectorDeployer.reachedUpLimit();
     	// This function is for manual override only.  Ignore the limits in case the pot gets messed up!!!
-    	//boolean finished = (isTimedOut() || reachedLimit);
-        //return finished;
+    	///boolean reachedLimit = Robot.collectorDeployer.reachedUpLimit();
+    	///boolean finished = (isTimedOut() || reachedLimit);
+        ///return finished;
     	return isTimedOut();
     }
 

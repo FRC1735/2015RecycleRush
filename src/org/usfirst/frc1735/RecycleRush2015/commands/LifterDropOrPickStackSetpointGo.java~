@@ -36,7 +36,7 @@ public class  LifterDropOrPickStackSetpointGo extends Command {
     	
     	// Make sure the fingers are engaged before moving the lifter into the bottom position
     	Robot.lifter.fingerEngage();
-    	Robot.lifter.lifterMove(0.0);// arg is the desired setpoint.  Activates PID subsystem.
+    	Robot.lifter.lifterMove(0.0, System.currentTimeMillis()*1000);// arg is the desired setpoint.  Activates PID subsystem.
     }
 
     // Called repeatedly when this Command is scheduled to run
