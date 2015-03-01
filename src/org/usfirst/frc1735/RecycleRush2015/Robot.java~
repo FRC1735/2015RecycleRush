@@ -13,11 +13,11 @@ package org.usfirst.frc1735.RecycleRush2015;
 
 import org.usfirst.frc1735.RecycleRush2015.commands.AutonomousDispatcher;
 import org.usfirst.frc1735.RecycleRush2015.commands.AutonomousCommand;
-import org.usfirst.frc1735.RecycleRush2015.subsystems.CollectGrasp;
 import org.usfirst.frc1735.RecycleRush2015.subsystems.CollectorDeployer;
 import org.usfirst.frc1735.RecycleRush2015.subsystems.CollectorRoller;
 import org.usfirst.frc1735.RecycleRush2015.subsystems.DriveTrain;
 import org.usfirst.frc1735.RecycleRush2015.subsystems.Lifter;
+import org.usfirst.frc1735.RecycleRush2015.subsystems.Poker;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;

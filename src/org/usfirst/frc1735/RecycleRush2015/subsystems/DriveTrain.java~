@@ -90,7 +90,8 @@ public class DriveTrain extends Subsystem {
 //        }
 //        // Drive with the compensated value.
 //        System.out.println("After Compensation Left = " + driveLeft + " Right = " + driveRight);
-        robotDrive21.tankDrive(driveLeft, driveRight);
+    	
+        robotDrive21.tankDrive(driveLeft, driveRight); // Optional third arg bool SquaredInputs, when true, decreases sensitivity at low speeds.
     }
   
     

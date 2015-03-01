@@ -77,9 +77,16 @@ public class Lifter extends PIDSubsystem {
         //                  to
         // enable() - Enables the PID controller.
         
-        // Initialize the ratchet wait time to zero so that it is a known (and small) value.
+        // Initialize the ratchet wait time variables to zero/false so that it is a known (and small) value.
         // This is needed so that if the first thing we do with the robot is go "up", then the code that waits for current time to be later than the wait time will work properly
         m_ratchetWaitTime = 0;
+        m_liftWaitTime = 0;
+        m_releasingRatchet = false;
+        
+    	// FOR PID subsystem use:
+        // Downward rotation of the motor is faster than the lifter will fall, and we tend to get the rope all tangled up off the spooler.
+    	// Thus, clamp any negative magnitudes to some smaller (tunable) max so that we avoid this issue.
+        Robot.lifter.setOutputRange(-0.3333, 1); // Limit downward speed to 33%
     }
     
     public void initDefaultCommand() {
@@ -139,7 +146,7 @@ public class Lifter extends PIDSubsystem {
     public void lifterMove(double setpoint, double currentTime) {
 	    // Because there is a ratchet interlock, we need to determine if the ratchet needs to be disengaged before invoking the PID controller!
         // Handle the ratchet pawl
-    	// If the current encoder value is BELOW (ore equal to) the setpoint, engage the ratchet.
+    	// If the current encoder value is BELOW (or equal to) the setpoint, engage the ratchet.
 	    // If the current encoder value is ABOVE the setpoint, we have to lower the lift and should DISENGAGE the ratchet.
     	boolean goingUp = (Robot.lifter.getPosition() < setpoint),
     			stoppedOrGoingUp = (Robot.lifter.getPosition() <= setpoint);
@@ -148,7 +155,7 @@ public class Lifter extends PIDSubsystem {
 		}
 		else {
 			// Find out if the ratchet is currently engaged:
-			if (RobotMap.lifterRatchetServo.getAngle() >2) { // engaged is 90.  Use >2 rather than >0 just in case the servo didn't truly reach zero for some reason.
+			if (!m_releasingRatchet && (RobotMap.lifterRatchetServo.getAngle() >10)) { // engaged is 90.  Use >10 rather than >0 just in case the servo didn't truly reach zero for some reason.
 				//Then we are requesting a state change to the ratchet.
 				// We need to goose the motor up a little bit in order to get the ratchet disengaged from the pawl,
 				// as gravity could be forcing the ratchet down against it and rendering it impossible to lift the pawl!
@@ -158,20 +165,28 @@ public class Lifter extends PIDSubsystem {
 				   // Problem is, if we ran up to the high limit already, we can only go down, so we have to rise up a little bit even if the limit switch were activated.
 				   // thus, we set the lifter magnitude to just barely rise and take the load off the pawl, but **HOPEFULLY** not enough to completely jam us.
 				   // #FINGERSCROSSED
-				
-				lifterMotorCAN.set(0.40); // Motor magnitude is nonlinear, so 40% of full value is actually much less than that power-wise.
+				m_releasingRatchet = true;
+				lifterMotorCAN.set(0.4); // Motor magnitude is nonlinear, so 40% of full value is actually much less than that power-wise.
 				//Set a 40ms timer to let server get out of the way before we engage the motor downwards.
+				m_liftWaitTime    = currentTime + 0.2;
 				m_ratchetWaitTime = currentTime + 0.4;// With a 50ms PID polling loop, this should put us one loop out.
 			}
-			ratchetDisengage();
 	    }
         
+        // Wait a moment for the lift to take load off the ratchet
+        if (m_releasingRatchet && (currentTime >= m_liftWaitTime) && (currentTime < m_ratchetWaitTime)) {
+        	// Here we have waited long enough for the load, and can disengage the ratchet
+        	ratchetDisengage();
+        }
+ 
         // Wait a moment for the ratchet to get out of the way.
         // Get the current count, and continue only if we are far enough beyond it.
         // Note:  for going up, m_ratchetWaitTime will be either the constructor-time init value (0) or the last time we lowered... both of which will be less than the current time.
-        if (currentTime > m_ratchetWaitTime)
+        if (currentTime >= m_ratchetWaitTime)
         {	
 	        
+        	// Clear the flag.  we're done with waiting.
+        	m_releasingRatchet = false;
 	        // finally, move the lifter directly.  Motor controller and joystick both work on -1..1 value range.
 	        // We need limit switches to protect top and bottom lifter movement!
 	        // Only move the motor if the requested direction is not in the same direction as a pressed limit switch.
@@ -179,12 +194,7 @@ public class Lifter extends PIDSubsystem {
 	        if (!((goingUp && reachedHighLimit()) ||
 	        	  (!stoppedOrGoingUp && reachedLowLimit()))) {
 	        	// Here we are NOT asking to move higher, but the high limit is set... or lower, but the low limit is set... 
-	        	// So, we can move the motor
-	        	// Downward rotation of the motor is faster than the lifter will fall, and we tend to get the rope all tangled up off the spooler.
-	        	// Thus, clamp any negative magnitudes to some smaller (tunable) max so that we avoid this issue.
-	        	// FIXME:  Uncomment this once lifter down-springs are installed!
-	        	//if (magnitude < -0.3333) { magnitude = -0.3333; }// Clamp downward motion to a max of this value
-	        	// Now we can move the lifter into position without damaging anything...
+	        	// So, we can move the motor.  Clamping of downward motion handled in the lifter's constructor.
 	    	    Robot.lifter.setSetpoint(setpoint);
 	    	    Robot.lifter.enable();
 	        }
@@ -226,40 +236,51 @@ public class Lifter extends PIDSubsystem {
         // Use limit switches to prevent us from (literally) going off the rails.
         Robot.lifter.disable(); // Make sure the PID controller is still disabled (in case something enabled it)
 
-        double magnitude = -joy; // We want joystick "up" to be positive numbers for the remainder of the calculations....
-
+        double magnitude = joy; // We want joystick "up" (negative joy values) to be lifter down, keep polarity numbers for the remainder of the calculations....
+        
+        liftWithLimits(magnitude, currentTime);
+    }
+    
+    public void liftWithLimits(double magnitude, double currentTime) {
         // Handle the ratchet pawl
         // if we are going up (or stopping!), engage the ratchet.
-        // If we are going down, disengage the ratchet        // Negative Y values are joystick-forward.  Define that as "up".
+        // If we are going down, disengage the ratchet        // Negative Y values are joystick-forward.  Define that as "down".
         if (magnitude >= 0) {
 	    	ratchetEngage();
 		}
 		else {
 			// Find out if the ratchet is currently engaged:
-			if (RobotMap.lifterRatchetServo.getAngle() >2) { // engaged is 90.  Use >2 rather than >0 just in case the servo didn't truly reach zero for some reason.
+			if (!m_releasingRatchet && (RobotMap.lifterRatchetServo.getAngle() > 10)) { // engaged is 90.  Use >10 rather than >0 just in case the servo didn't truly reach zero for some reason.
 				//Then we are requesting a state change to the ratchet.
 				// We need to goose the motor up a little bit in order to get the ratchet disengaged from the pawl,
 				// as gravity could be forcing the ratchet down against it and rendering it impossible to lift the pawl!
-				// Make a guess that 40% up for the duration we wait for the servo will be sufficient:
+				// Make a guess that 40% up will be sufficient:
 				   // If we are right up against the limit switch or hard limit... this may not work,
 				   // or may jam us completely since it ignores the limit switch and could travel up to the Point of No Return.
 				   // Problem is, if we ran up to the high limit already, we can only go down, so we have to rise up a little bit even if the limit switch were activated.
 				   // thus, we set the lifter magnitude to just barely rise and take the load off the pawl, but **HOPEFULLY** not enough to completely jam us.
 				   // #FINGERSCROSSED
-				
-				lifterMotorCAN.set(0.40); // Motor magnitude is nonlinear, so 40% of full value is actually much less than that power-wise.
+				m_releasingRatchet = true;
+				lifterMotorCAN.set(0.4); // Motor magnitude is nonlinear, so 40% of full value is actually much less than that power-wise.
 				//Set a 40ms timer to let server get out of the way before we engage the motor downwards.
+				m_liftWaitTime    = currentTime + 0.2;
 				m_ratchetWaitTime = currentTime + 0.4;// With a 20ms polling loop, this should put us two loops out.  One was not enough.
 			}
-			ratchetDisengage();
 	    }
+        
+        // Wait a moment for the lift to take load off the ratchet
+        if (m_releasingRatchet && (currentTime >= m_liftWaitTime) && (currentTime < m_ratchetWaitTime)) {
+        	// Here we have waited long enough for the load, and can disengage the ratchet
+        	ratchetDisengage();
+        }
         
         // Wait a moment for the ratchet to get out of the way.
         // Get the current count, and continue only if we are far enough beyond it.
         // Note:  for going up, m_ratchetWaitTime will be either the constructor-time init value (0) or the last time we lowered... both of which will be less than the current time.
-        if (currentTime > m_ratchetWaitTime)
-        {	
-	        
+        if (currentTime >= m_ratchetWaitTime)
+        {
+        	// Clear the flag.  we're done with waiting.
+        	m_releasingRatchet = false;
 	        // finally, move the lifter directly.  Motor controller and joystick both work on -1..1 value range.
 	        // We need limit switches to protect top and bottom lifter movement!
 	        // Only move the motor if the requested direction is not in the same direction as a pressed limit switch.
@@ -270,15 +291,14 @@ public class Lifter extends PIDSubsystem {
 	        	// So, we can move the motor
 	        	// Downward rotation of the motor is faster than the lifter will fall, and we tend to get the rope all tangled up off the spooler.
 	        	// Thus, clamp any negative magnitudes to some smaller (tunable) max so that we avoid this issue.
-	        	// FIXME:  Uncomment this once lifter down-springs are installed!
-	        	//if (magnitude < -0.3333) { magnitude = -0.3333; }// Clamp downward motion to a max of this value
+	        	if (magnitude < -0.3333) { magnitude = -0.3333; }// Clamp downward motion to a max of this value
 	        	lifterMotorCAN.set(magnitude);
 	        	// Alternate counter-based limit switch would need to reset the counter if moving in a direction away from the limit switch, e.g., 
 	        	//if (magnitude < 0) {highLimitCounter.reset()};
 	        }
 	        // Otherwise, we have hit a limit switch and are requesting to go even further.
 	        // Ignore the request and just return.
-        } // If not, then the ratchet may not be out of the way and we can't move the motor yet.
+        }
     }
     
     public boolean reachedHighLimit() {
@@ -298,8 +318,15 @@ public class Lifter extends PIDSubsystem {
     	// Assumes switch wiring is momentary contact = grounded
     	return (!limitLow.get());
     }
+    
+    public void stop() {
+    	disable();
+    	lifterMotorCAN.set(0);
+    }
 
 // Storage for the end time of the ratchet delay wait
+    double m_liftWaitTime;
     double m_ratchetWaitTime;
+    boolean m_releasingRatchet;
     
 }

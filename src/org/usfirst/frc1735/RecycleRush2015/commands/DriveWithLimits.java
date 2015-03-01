@@ -73,7 +73,7 @@ public class  DriveWithLimits extends Command {
             	}
             } // end if (travelError)
     	} // end if (m_enableDriveCompensation)
-    	
+    	//System.out.println("driving with L= " + leftMagnitudeDirection + ", R= " + rightMagnitudeDirection);
     	Robot.driveTrain.tankDrive(leftMagnitudeDirection,  rightMagnitudeDirection);
     }
 
@@ -84,9 +84,11 @@ public class  DriveWithLimits extends Command {
         double currentRightDistance = RobotMap.driveTrainRightMotorEncoder.getDistance();
         double leftTravel = Math.abs(currentLeftDistance - m_leftStartDistance);
         double rightTravel = Math.abs(currentRightDistance - m_rightStartDistance);
-        System.out.println("R distance traveled is" + rightTravel);
-        
-        return (timedOut || (leftTravel > m_distanceLimit) || (rightTravel > m_distanceLimit));
+        //System.out.println("m_distanceLimit = " + m_distanceLimit);
+        //System.out.println("R distance traveled is " + rightTravel + " and L distance traveled is " + rightTravel);
+        boolean finished = (timedOut || (leftTravel > Math.abs(m_distanceLimit)) || (rightTravel > Math.abs(m_distanceLimit)));
+        //System.out.println("isFinished returns status= " + finished);
+        return finished;
     }
 
     // Called once after isFinished returns true

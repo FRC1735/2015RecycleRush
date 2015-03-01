@@ -42,13 +42,13 @@ public class LifterActiveMode extends CommandGroup {
     	// Wait until that sensor fires, and then drop the lifter to grab the tote on the fly...
     	// Start by getting the lifter into place to grab a single tote.  or container.  depending on the arg...
     	if (type == 1) {
-    		addSequential(new Lifter1ToteSetpointGo());
+    		addSequential(new Lifter1ToteDeadReckoning()); //FIXME SetpointGo());
     	}
     	if (type == 2) {
     		addSequential(new Lifter2ToteSetpointGo());
     	}
     	else {// if (type == 3) {
-    		addSequential(new LifterContainerSetpointGo());
+    		addSequential(new LifterContainerDeadReckoning()); //FIXME SetpointGo());
     	}
     	
     	
@@ -57,17 +57,17 @@ public class LifterActiveMode extends CommandGroup {
     	addSequential(new WaitForToteSensor());
     	
     	// if we get this far, we have found a tote.  Drop around it...
-    	addSequential(new LifterDropOrPickStackSetpointGo());
+    	addSequential(new LifterDropDeadReckoning()); //FIXME OrPickStackSetpointGo());
     	
     	// ... and pick it up
     	if (type == 1) {
-    		addSequential(new Lifter1ToteSetpointGo());
+    		addSequential(new Lifter1ToteDeadReckoning()); //FIXME SetpointGo());
     	}
     	if (type == 2) {
     		addSequential(new Lifter2ToteSetpointGo());
     	}
     	else {// if (type == 3) {
-    		addSequential(new LifterContainerSetpointGo());
+    		addSequential(new LifterContainerDeadReckoning()); //FIXME SetpointGo());
     	}
     	
     	// At the end of this state, we are holding a tote and are in position to go do the sequence again

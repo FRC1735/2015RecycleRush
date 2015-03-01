@@ -12,6 +12,8 @@
 package org.usfirst.frc1735.RecycleRush2015.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc1735.RecycleRush2015.Robot;
 
 /**
@@ -37,6 +39,9 @@ public class  LifterActiveDisable extends Command {
     protected void execute() {
     	// Just executing this command will cause an interrupt to the running armed function and cancel the command.
     	// This *should* sufficiently disarm and return control to something else.
+    	// Send a "disarmed" indication to the SmartDashboard
+        SmartDashboard.putBoolean("Auto-Lift Armed", false);
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -46,11 +51,12 @@ public class  LifterActiveDisable extends Command {
     
     // Called once after isFinished returns true
     protected void end() {
+    	//TODO:  Should there be an action here?
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.lifter.disable();
+    	//TODO:  Should there be an action here?
     }
 }

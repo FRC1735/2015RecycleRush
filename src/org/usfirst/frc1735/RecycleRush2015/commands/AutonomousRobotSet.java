@@ -18,25 +18,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutonomousRobotSet extends CommandGroup {
     
     public  AutonomousRobotSet() {
-        // Add Commands here:
-        // e.g. addSequential(new Command1());
-        //      addSequential(new Command2());
-        // these will run in order.
-
-        // To run multiple commands at the same time,
-        // use addParallel()
-        // e.g. addParallel(new Command1());
-        //      addSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
-
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
-    	
     	// A Robot Set consists of driving forward far enough to be completely
     	// contained within the Auto Zone.
-    	addSequential(new DriveWithLimits(5, 9, 0.75)); // args are seconds, feet, and power
+    	addSequential(new DriveWithLimits(3, 11, 0.75)); // args are seconds, feet, and power
     }
 }

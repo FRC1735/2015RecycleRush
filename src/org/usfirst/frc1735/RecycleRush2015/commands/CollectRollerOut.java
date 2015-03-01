@@ -40,7 +40,7 @@ public class  CollectRollerOut extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.collectorRoller.engage(1); // Positive values push object out
+    	Robot.collectorRoller.engage(0.85); // Positive values push object out
    }
 
     // Make this return true when this Command no longer needs to run execute()

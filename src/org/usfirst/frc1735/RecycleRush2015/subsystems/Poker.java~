@@ -40,5 +40,16 @@ public class Poker extends Subsystem {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }
+    
+    public void extend() {
+    	doubleSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+    public void retract() {
+    	doubleSolenoid.set(DoubleSolenoid.Value.kReverse);
+    }
+    public void stop() {
+    	doubleSolenoid.set(DoubleSolenoid.Value.kOff);
+    	
+    }
 }
 

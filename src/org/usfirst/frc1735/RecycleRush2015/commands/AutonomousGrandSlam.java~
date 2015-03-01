@@ -22,61 +22,62 @@ public class AutonomousGrandSlam extends CommandGroup {
 	// The plan:
 	// 1) start with robot around our container (before match start)
 	// 2) lift container
-	addSequential(new LifterContainerSetpointGo());
+	addSequential(new LifterContainerDeadReckoning()); //FIXME SetpointGo());
 	// 3a) Arm lifter
-	addSequential(new LifterActiveMode());
+	addParallel(new LifterActiveMode());
 	// 3b) Roller in
-	addParallel(new CollectRollerIn());
+	addSequential(new CollectRollerIn(2));
 	// 3c) drive forward enough to grab tote (and auto-lift)
-	addParallel(new DriveWithLimits(3, 0.5, 0.75)); // Time, Distance, speed
+	//addSequential(new DriveWithLimits(3, 0.5, 0.75)); // Time, Distance, speed
+
 	// Now we have both our container and our tote.
-	
-	
 	// 4) Grab the second alliance's container so we can move it out of the way.
-	addSequential(new DriveWithLimits(3, 2, 0.75)); // Time, Distance, speed.  This will just cause the collector to be sucked in against the tote we have.
+	addParallel(new CollectRollerIn(3)); // turn on rollers to grab the container
+	addSequential(new DriveWithLimits(3, 5.5, 0.75)); // Time, Distance, speed.  This will just cause the collector to be sucked in against the tote we have.
+
 	// 5) Now turn downfield...
 	addSequential(new TurnDownfield());
 	// 6) Drive into the Auto Zone
-	addSequential(new DriveWithLimits(5, 9, 0.75)); // Time, Distance, speed.
+	addSequential(new DriveWithLimits(5, 11, 0.75)); // Time, Distance, speed.
 	// 7) and spit it out!
-	addSequential(new CollectRollerOut());
+	addSequential(new CollectRollerOut(2));
 	// 8) Drive back to the tote line
-	addSequential(new DriveWithLimits(5, 9, -0.75)); // Time, Distance, speed.	
-	// 9a) Turn back towards the totes
-	addSequential(new TurnInfield());
-	// 9b) While reversing the roller back to an input configuration
-	addParallel(new CollectRollerIn());
-	
+	addSequential(new DriveWithLimits(5, 11, -0.75)); // Time, Distance, speed.	
+	// 9) Turn back towards the totes
+	addSequential(new TurnInfield());	
 	
 	// Get the second alliance's tote!
 	// 10a) Arm lifter
-	addSequential(new LifterActiveMode());
-	// 10b) drive forward to get second tote
-	addParallel(new DriveWithLimits(3, 1.5, 0.75)); // Time, Distance, speed
+	addParallel(new LifterActiveMode());
+	// 10b) Engage the roller
+	addParallel(new CollectRollerIn(2));
+	// 10c) drive forward to get second tote
+	addSequential(new DriveWithLimits(3, 1.25, 0.75)); // Time, Distance, speed
 	// Now we should have collected the second tote and lifted it.
 	
 	
 	// 11) Grab the third alliance's container and score it
-	addSequential(new DriveWithLimits(3, 2, 0.75)); // Time, Distance, speed.  This will just cause the collector to be sucked in against the tote we have.
+	addParallel(new CollectRollerIn(3)); // turn on rollers to grab the container
+	addSequential(new DriveWithLimits(3, 5.5, 0.75)); // Time, Distance, speed.  This will just cause the collector to be sucked in against the tote we have.
+
 	// 12) Now turn downfield...
 	addSequential(new TurnDownfield());
 	// 13) Drive into the Auto Zone
-	addSequential(new DriveWithLimits(5, 9, 0.75)); // Time, Distance, speed.
+	addSequential(new DriveWithLimits(5, 11, 0.75)); // Time, Distance, speed.
 	// 14) and spit it out!
-	addSequential(new CollectRollerOut());
+	addSequential(new CollectRollerOut(2));
 	// 15) Drive back to the tote line
-	addSequential(new DriveWithLimits(5, 9, -0.75)); // Time, Distance, speed.	
+	addSequential(new DriveWithLimits(5, 11, -0.75)); // Time, Distance, speed.	
 	// 16a) Turn back towards the totes
-	addSequential(new TurnInfield());
-	// 16b) While reversing the roller back to an input configuration
-	addParallel(new CollectRollerIn());
-	
+	addSequential(new TurnInfield());	
 	
 	// Get the third alliance's tote!
 	// 17a) arm lifter
-	addSequential(new LifterActiveMode());
-	// 17b) driver forward to get third tote
-	addParallel(new DriveWithLimits(3, 1.5, 0.75));  // Time, Distance, speed
+	addParallel(new LifterActiveMode());
+	// 13b) Engage the roller
+	addParallel(new CollectRollerIn(2));
+	// 17c) drive forward to get third tote
+	addSequential(new DriveWithLimits(3, 1.25, 0.75));  // Time, Distance, speed
 	// Now we should have collected the third tote and lifted it.
 	
 	
@@ -85,11 +86,11 @@ public class AutonomousGrandSlam extends CommandGroup {
 	// 18) Turn 90'
 	addSequential(new TurnDownfield());
 	// 19) Go forward into the Auto Zone
-	addSequential(new DriveWithLimits(3, 9, 0.75)); // Time, Distance, speed   	
+	addSequential(new DriveWithLimits(3, 11, 0.75)); // Time, Distance, speed   	
 	// 20) Drop stack
-	addSequential(new LifterDropStack());
+	addSequential(new LifterDropDeadReckoning()); //FIXME Stack());
 	// 21) Back up 2 feet
-	addSequential(new DriveWithLimits(3, 2, 0.75));  // Time, Distance, speed
+	addSequential(new DriveWithLimits(3, 2, -0.75));  // Time, Distance, speed
 	// Done.
     }
 }
