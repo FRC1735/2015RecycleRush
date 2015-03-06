@@ -86,7 +86,7 @@ public class Lifter extends PIDSubsystem {
     	// FOR PID subsystem use:
         // Downward rotation of the motor is faster than the lifter will fall, and we tend to get the rope all tangled up off the spooler.
     	// Thus, clamp any negative magnitudes to some smaller (tunable) max so that we avoid this issue.
-        Robot.lifter.setOutputRange(-0.3333, 1); // Limit downward speed to 33%
+        //FIXME:  Causes exception:  Robot.lifter.setOutputRange(-0.3333, 1); // Limit downward speed to 33%
     }
     
     public void initDefaultCommand() {
@@ -247,7 +247,7 @@ public class Lifter extends PIDSubsystem {
         // If we are going down, disengage the ratchet        // Negative Y values are joystick-forward.  Define that as "down".
         if (magnitude >= 0) {
 	    	ratchetEngage();
-		}
+        }
 		else {
 			// Find out if the ratchet is currently engaged:
 			if (!m_releasingRatchet && (RobotMap.lifterRatchetServo.getAngle() > 10)) { // engaged is 90.  Use >10 rather than >0 just in case the servo didn't truly reach zero for some reason.
@@ -261,17 +261,19 @@ public class Lifter extends PIDSubsystem {
 				   // thus, we set the lifter magnitude to just barely rise and take the load off the pawl, but **HOPEFULLY** not enough to completely jam us.
 				   // #FINGERSCROSSED
 				m_releasingRatchet = true;
-				lifterMotorCAN.set(0.4); // Motor magnitude is nonlinear, so 40% of full value is actually much less than that power-wise.
+	        	ratchetDisengage();
 				//Set a 40ms timer to let server get out of the way before we engage the motor downwards.
 				m_liftWaitTime    = currentTime + 0.2;
-				m_ratchetWaitTime = currentTime + 0.4;// With a 20ms polling loop, this should put us two loops out.  One was not enough.
+				m_ratchetWaitTime = currentTime + 0.25;// With a 20ms polling loop, this should put us two loops out.  One was not enough.
 			}
 	    }
-        
+
+        if (m_releasingRatchet && currentTime <= m_liftWaitTime) {
+			lifterMotorCAN.set(1.0); // Motor magnitude is nonlinear, so 40% of full value is actually much less than that power-wise.        	
+        }
         // Wait a moment for the lift to take load off the ratchet
-        if (m_releasingRatchet && (currentTime >= m_liftWaitTime) && (currentTime < m_ratchetWaitTime)) {
+        if (m_releasingRatchet) {// && (currentTime >= m_liftWaitTime) && (currentTime < m_ratchetWaitTime)) {
         	// Here we have waited long enough for the load, and can disengage the ratchet
-        	ratchetDisengage();
         }
         
         // Wait a moment for the ratchet to get out of the way.
