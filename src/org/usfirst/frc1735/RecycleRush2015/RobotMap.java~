@@ -43,17 +43,12 @@ public class RobotMap {
     public static Encoder driveTrainRightMotorEncoder;
     public static SpeedController lifterLifterMotor;
     public static Servo lifterRatchetServo;
-    public static Servo lifterFingerServoLeft;
-    public static Servo lifterFingerServoRight;
     public static DigitalInput lifterToteReadyIndicator;
-    public static Encoder lifterLiftHeightEncoder;
     public static AnalogPotentiometer lifterLiftHeightPot;
     public static DigitalInput lifterLimitHigh;
     public static DigitalInput lifterLimitLow;
     public static SpeedController collectorRollerIntakeMotorLeft;
     public static SpeedController collectorRollerIntakeMotorRight;
-    public static SpeedController collectorDeployerDeployMotor;
-    public static AnalogPotentiometer collectorDeployerDeployPot;
     public static Compressor pokerCompressor;
     public static DoubleSolenoid pokerDoubleSolenoid;
 
@@ -95,19 +90,9 @@ public class RobotMap {
         lifterRatchetServo = new Servo(3);
         LiveWindow.addActuator("Lifter", "Ratchet Servo", lifterRatchetServo);
         
-        lifterFingerServoLeft = new Servo(5);
-        LiveWindow.addActuator("Lifter", "Finger Servo Left", lifterFingerServoLeft);
-        
-        lifterFingerServoRight = new Servo(4);
-        LiveWindow.addActuator("Lifter", "Finger Servo Right", lifterFingerServoRight);
-        
         lifterToteReadyIndicator = new DigitalInput(0);
         LiveWindow.addSensor("Lifter", "Tote Ready Indicator", lifterToteReadyIndicator);
         
-        lifterLiftHeightEncoder = new Encoder(1, 2, false, EncodingType.k1X);
-        LiveWindow.addSensor("Lifter", "Lift Height Encoder", lifterLiftHeightEncoder);
-        lifterLiftHeightEncoder.setDistancePerPulse(1.0);
-        lifterLiftHeightEncoder.setPIDSourceParameter(PIDSourceParameter.kDistance);
         lifterLiftHeightPot = new AnalogPotentiometer(0, 10.0, 0.0);
         LiveWindow.addSensor("Lifter", "Lift Height Pot", lifterLiftHeightPot);
         
@@ -122,12 +107,6 @@ public class RobotMap {
         
         collectorRollerIntakeMotorRight = new Talon(7);
         LiveWindow.addActuator("Collector Roller", "Intake Motor Right", (Talon) collectorRollerIntakeMotorRight);
-        
-        collectorDeployerDeployMotor = new Talon(8);
-        LiveWindow.addActuator("Collector Deployer", "Deploy Motor", (Talon) collectorDeployerDeployMotor);
-        
-        collectorDeployerDeployPot = new AnalogPotentiometer(1, 1.0, 0.0);
-        LiveWindow.addSensor("Collector Deployer", "Deploy Pot", collectorDeployerDeployPot);
         
         pokerCompressor = new Compressor(0);
         

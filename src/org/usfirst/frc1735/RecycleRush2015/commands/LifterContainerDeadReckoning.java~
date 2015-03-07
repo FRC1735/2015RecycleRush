@@ -31,7 +31,7 @@ public class  LifterContainerDeadReckoning extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	setTimeout(0.75); // Run the lifter this long to achieve the desired height.
+    	setTimeout(0.5); // Run the lifter this long to achieve the desired height.
     }
 
     // Called repeatedly when this Command is scheduled to run

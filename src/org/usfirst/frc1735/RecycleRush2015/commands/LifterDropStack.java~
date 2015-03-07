@@ -35,10 +35,7 @@ public class LifterDropStack extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	
-    	// First, lower the lifter to the lowest drop-off/pick-up level
+    	// Lower the lifter to the lowest drop-off/pick-up level
     	addSequential(new LifterDropOrPickStackSetpointGo());
-    	
-    	// Then, disengage the fingers so that the driver can leave the stack behind
-    	addSequential(new LifterFingerDisengage());
     }
 }
