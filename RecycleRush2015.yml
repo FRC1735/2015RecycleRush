@@ -320,7 +320,7 @@ Children:
           default: '0'
           name: Forward Channel (Solenoid)
           validators: [Solenoid]
-          value: '0'
+          value: '1'
         Reverse PCM (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
           choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11',
             '12', '13', '14', '15', '16', '17', '18', '19', '20']
@@ -333,7 +333,7 @@ Children:
           default: '0'
           name: Reverse Channel (Solenoid)
           validators: [Solenoid]
-          value: '1'
+          value: '0'
         Forward PCM (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
           choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11',
             '12', '13', '14', '15', '16', '17', '18', '19', '20']

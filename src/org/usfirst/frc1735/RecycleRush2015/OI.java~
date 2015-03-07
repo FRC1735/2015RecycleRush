@@ -35,8 +35,6 @@ import org.usfirst.frc1735.RecycleRush2015.commands.LifterDropOrPickStackSetpoin
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterDropStack;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterRatchetDisengage;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterRatchetEngage;
-import org.usfirst.frc1735.RecycleRush2015.commands.LifterRatchetMove;
-import org.usfirst.frc1735.RecycleRush2015.commands.LifterMove;
 import org.usfirst.frc1735.RecycleRush2015.commands.PokeExtend;
 import org.usfirst.frc1735.RecycleRush2015.commands.PokeRetract;
 import org.usfirst.frc1735.RecycleRush2015.commands.TurnDownfield;
