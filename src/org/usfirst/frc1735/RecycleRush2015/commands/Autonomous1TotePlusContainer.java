@@ -23,22 +23,23 @@ public class Autonomous1TotePlusContainer extends CommandGroup {
     	// 2) lift container
     	addSequential(new LifterGotoContainer());
     	// 3a) Arm lifter
-    	addParallel(new LifterActiveMode());
+    	//addParallel(new LifterActiveMode());
     	// 3b) Roller in
-    	addSequential(new CollectRollerIn(2));
+    	//addSequential(new CollectRollerIn(2));
     	// 3c) drive forward enough to grab tote (and auto-lift)
-    	addSequential(new DriveWithLimits(3, 1.5, 0.75)); // Time, Distance, speed
-
+    	addSequential(new DriveWithLimits(3, 1.6, 0.5)); // Time, Distance, speed
+    	addSequential(new LifterGotoDrop());
+    	addSequential(new LifterGotoCarryTote());
     	// Now we have both our container and our tote.
     	// Turn and go to the auto zone to complete our mission
 		// 4) Turn 90'
     	addSequential(new TurnDownfield());
 		// 5) Go forward into the Auto Zone
-    	addSequential(new DriveWithLimits(3, 11, 0.75)); // Time, Distance, speed   	
+    	addSequential(new DriveWithLimits(3, 9.5, 0.75)); // Time, Distance, speed   	
 		// 6) Drop stack
-    	addSequential(new LifterGotoDrop());
+    	//addSequential(new LifterGotoDrop());
 		// 7) Back up 2 feet
-    	addSequential(new DriveWithLimits(3, 2, -0.75));  // Time, Distance, speed
+    	//addSequential(new DriveWithLimits(3, 2, -0.75));  // Time, Distance, speed
     	// Done.
     	
     }
