@@ -22,7 +22,7 @@ public class AutonomousGrandSlam extends CommandGroup {
 	// The plan:
 	// 1) start with robot around our container (before match start)
 	// 2) lift container
-	addSequential(new LifterContainerDeadReckoning()); //FIXME SetpointGo());
+	addSequential(new LifterGotoContainer());
 	// 3a) Arm lifter
 	addParallel(new LifterActiveMode());
 	// 3b) Roller in
@@ -88,7 +88,7 @@ public class AutonomousGrandSlam extends CommandGroup {
 	// 19) Go forward into the Auto Zone
 	addSequential(new DriveWithLimits(3, 11, 0.75)); // Time, Distance, speed   	
 	// 20) Drop stack
-	addSequential(new LifterDropDeadReckoning()); //FIXME Stack());
+	addSequential(new LifterGotoDrop());
 	// 21) Back up 2 feet
 	addSequential(new DriveWithLimits(3, 2, -0.75));  // Time, Distance, speed
 	// Done.

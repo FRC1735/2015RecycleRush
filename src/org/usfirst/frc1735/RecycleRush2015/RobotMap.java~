@@ -111,7 +111,7 @@ public class RobotMap {
         pokerCompressor = new Compressor(0);
         
         
-        pokerDoubleSolenoid = new DoubleSolenoid(0, 0, 1);      
+        pokerDoubleSolenoid = new DoubleSolenoid(0, 1, 0);      
         LiveWindow.addActuator("Poker", "Double Solenoid", pokerDoubleSolenoid);
         
 

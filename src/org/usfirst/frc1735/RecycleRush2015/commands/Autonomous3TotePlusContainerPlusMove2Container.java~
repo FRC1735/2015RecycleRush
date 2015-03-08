@@ -21,7 +21,7 @@ public class Autonomous3TotePlusContainerPlusMove2Container extends CommandGroup
 	    // The plan:
     	// 1) start with robot around our container (before match start)
     	// 2) lift container
-    	addSequential(new LifterContainerDeadReckoning()); //FIXME SetpointGo());
+    	addSequential(new LifterGotoContainer());
     	// 3a) Arm lifter
     	addParallel(new LifterActiveMode());
     	// 3b) Roller in
@@ -80,7 +80,7 @@ public class Autonomous3TotePlusContainerPlusMove2Container extends CommandGroup
 		// 15) Go forward into the Auto Zone
     	addSequential(new DriveWithLimits(3, 11, 0.75)); // Time, Distance, speed   	
 		// 16) Drop stack
-    	addSequential(new LifterDropDeadReckoning()); //FIXME Stack());
+    	addSequential(new LifterGotoDrop());
 		// 17) Back up 2 feet
     	addSequential(new DriveWithLimits(3, 2, -0.75));  // Time, Distance, speed
     	// Done.

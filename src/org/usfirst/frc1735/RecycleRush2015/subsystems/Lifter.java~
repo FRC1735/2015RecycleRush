@@ -302,6 +302,33 @@ public class Lifter extends PIDSubsystem {
     	disable();
     	lifterMotorCAN.set(0);
     }
+    
+    public double calculateMagnitudeDirection(double setpoint) {
+    	// Based on current position and desired setpoint, return the Direction/Magnitude.
+    	// Do this in a general function for maintainability.
+    	
+    	// Query the Tape Pot.  Rough values:
+    	// 9 is lowest height, 3 is highest.
+    	double currentPosition = liftHeightPot.get();
+    	
+    	if (currentPosition >= setpoint) {
+    		// Pot is wired for high numbers = low elevator, low numbers = high elevator.
+    		//Therefore a currentPosition value larger than the setpoint means we are below it.  We need to go up.
+    		return 1.0; // For now, assume "up" is full strength to combat large stacks.
+    	}
+    	else {
+    		// Else, we go down
+    		return -0.3333;	 // For now, assume "Down" is clamped to 1/3 speed so that the motor doesn't spin faster than gravity pulls the load down.
+    	}
+    }
+    
+    public boolean lifterTargetReached(double setpoint, double currentPosition, double magnitudeDirection) {
+		// Pot is wired for high numbers = low elevator, low numbers = high elevator.
+		//Therefore a currentPosition value larger than the setpoint means we are below it.
+		return (((magnitudeDirection >= 0) && currentPosition <= setpoint) || // if going up and have exceeded setpoint (smaller means above), or
+				((magnitudeDirection < 0 ) && currentPosition >= setpoint));  // if going down and have exceeded setpoint (bigger value means below)
+    }
+
 
 // Storage for the end time of the ratchet delay wait
     double m_liftWaitTime;

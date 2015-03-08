@@ -76,6 +76,18 @@ public class  AutonomousDispatcher extends Command {
             main_p = main;
             main.start();
         }
+        // "Option 6" is to lift a tote a little bit, and drive forward into the Auto Zone
+        else if (Robot.AutoMode.getSelected().toString().equals("6")) {
+            AutonomousCarryTote main = new AutonomousCarryTote();
+            main_p = main;
+            main.start();
+        }
+        // "Option 7" is to lift a container a little bit, and drive forward into the Auto Zone
+        else if (Robot.AutoMode.getSelected().toString().equals("7")) {
+            AutonomousCarryContainer main = new AutonomousCarryContainer();
+            main_p = main;
+            main.start();
+        }
         else {
                 // Again, if we select '0' as an option we fall through the 'if' statements and do nothing.
         }
