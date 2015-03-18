@@ -35,7 +35,7 @@ public class  LifterGotoCarryContainer extends Command {
     protected void initialize() {
     	setTimeout(1.5); // Sanity measure in case the pot goes crazy so we will eventually break out of the command...
     	
-    	m_setpoint = 5.5;
+    	m_setpoint = 6.95;
     	// Determine our direction of movement based on current position and setpoint.
     	m_requiredDirectionMagnitude = Robot.lifter.calculateMagnitudeDirection(m_setpoint);
     }

@@ -23,38 +23,45 @@ public class Autonomous3TotePlusContainer extends CommandGroup {
     	// 2) lift container
     	addSequential(new LifterGotoContainer());
     	// 3a) Arm lifter
-    	addParallel(new LifterActiveMode());
+    	//addParallel(new LifterActiveMode());
     	// 3b) Roller in
-    	addSequential(new CollectRollerIn(2));
+    	//addSequential(new CollectRollerIn(2));
     	// 3c) drive forward enough to grab tote (and auto-lift)
     	//addSequential(new DriveWithLimits(3, 0.5, 0.75)); // Time, Distance, speed
+    	addSequential(new DriveWithLimits(3, 1.5, 0.5)); // Time, Distance, speed
+    	addSequential(new LifterGotoDrop());
+    	addSequential(new LifterGoto1Tote());
 
     	// Now we have both our container and our tote.
 	    // Get everyone elses's totes!
 	    // This assumes that the other robots moved their containers out of the way.
     	// 4a) Arm lifter
-    	addParallel(new LifterActiveMode());
+    	//addParallel(new LifterActiveMode());
     	// 4b) Engage the roller
-    	addParallel(new CollectRollerIn(2));
+    	//addParallel(new CollectRollerIn(2));
 		// 4c) drive forward to get second tote
-    	addSequential(new DriveWithLimits(3, 6.75, 0.75)); // Time, Distance, speed
+    	addSequential(new DriveWithLimits(3.5, 8.75, 0.5)); // Time, Distance, speed
+    	addSequential(new LifterGotoDrop());
+    	addSequential(new LifterGoto1Tote());
     	// Now we should have collected the second tote and lifted it.  Lather, rinse, repeat.
 
     	// 5a) arm lifter
-    	addParallel(new LifterActiveMode());
+    	//addParallel(new LifterActiveMode());
 		// 5b) drive forward to get third tote
-    	addSequential(new DriveWithLimits(3, 6.75, 0.75));  // Time, Distance, speed
+    	addSequential(new DriveWithLimits(3.5, 8.85, 0.5));  // Time, Distance, speed
+    	addSequential(new LifterGotoDrop());
+    	addSequential(new LifterGotoCarryTote());
 
     	// Now we have three totes and a container
     	// Turn and go to the auto zone to complete our mission
 		// 7) Turn 90'
     	addSequential(new TurnDownfield());
 		// 8) Go forward into the Auto Zone
-    	addSequential(new DriveWithLimits(3, 11, 0.75)); // Time, Distance, speed   	
+    	addSequential(new DriveWithLimits(3, 9.5, 0.6666)); // Time, Distance, speed   	
 		// 9) Drop stack
-    	addSequential(new LifterGotoDrop());
+    	//addSequential(new LifterGotoDrop());
 		// 10) Back up 2 feet
-    	addSequential(new DriveWithLimits(3, 2, -0.75));  // Time, Distance, speed
+    	//addSequential(new DriveWithLimits(3, 2, -0.75));  // Time, Distance, speed
     	// Done.
     	
     }
