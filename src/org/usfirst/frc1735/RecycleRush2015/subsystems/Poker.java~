@@ -48,8 +48,7 @@ public class Poker extends Subsystem {
     	doubleSolenoid.set(DoubleSolenoid.Value.kForward);
     }
     public void stop() {
-    	doubleSolenoid.set(DoubleSolenoid.Value.kOff);
-    	
+    	doubleSolenoid.set(DoubleSolenoid.Value.kOff);  	
     }
 }
 

@@ -11,10 +11,11 @@
 
 package org.usfirst.frc1735.RecycleRush2015.subsystems;
 
+import org.usfirst.frc1735.RecycleRush2015.Robot;
 import org.usfirst.frc1735.RecycleRush2015.RobotMap;
 import org.usfirst.frc1735.RecycleRush2015.commands.*;
-import edu.wpi.first.wpilibj.*;
 
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 
@@ -42,9 +43,18 @@ public class CollectorRoller extends Subsystem {
     }
     
     public void engage(double magnitudeDirection) {
+    	// "in" is negative; "out" is positive.  
     	intakeMotorLeft.set(magnitudeDirection);
-    	intakeMotorRight.set(magnitudeDirection); // Assumes the left and right motors are mirrored
+    	intakeMotorRight.set(magnitudeDirection); // Assumes the left and right motors have inverted wiring
     }
     
+    // These functions use the collector wheels to push the robot sideways along a wall surface for lining up to the tote chute
+    public void wallDrive(double sideMagnitude, double forwardMagnitude) {
+    	// First, drive forward slightly to make sure the roller wheels will get traction against the wall
+    	Robot.driveTrain.tankDrive(forwardMagnitude, forwardMagnitude); // Move at a small forward magnitude
+    	// Arbitrarily define negative inputs as move left and positive as move right.
+    	intakeMotorLeft.set ( sideMagnitude);   // for left  motor, negative input values will move us left and positive values will move us right
+    	intakeMotorRight.set(-sideMagnitude); // for right motor, negative input values will move us right and negative values will move us left, so invert.
+    }
 }
 
