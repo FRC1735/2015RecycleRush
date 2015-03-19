@@ -17,6 +17,7 @@ import org.usfirst.frc1735.RecycleRush2015.commands.AntiAntiPokerRetract;
 import org.usfirst.frc1735.RecycleRush2015.commands.Autonomous1TotePlusContainer;
 import org.usfirst.frc1735.RecycleRush2015.commands.Autonomous3TotePlusContainer;
 import org.usfirst.frc1735.RecycleRush2015.commands.Autonomous3TotePlusContainerPlusMove2Container;
+import org.usfirst.frc1735.RecycleRush2015.commands.AutonomousCarryContainer;
 import org.usfirst.frc1735.RecycleRush2015.commands.AutonomousCommand;
 import org.usfirst.frc1735.RecycleRush2015.commands.AutonomousDispatcher;
 import org.usfirst.frc1735.RecycleRush2015.commands.AutonomousGrandSlam;
@@ -40,10 +41,13 @@ import org.usfirst.frc1735.RecycleRush2015.commands.LifterDropStack;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterGoto1Tote;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterGoto1ToteStep;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterGoto2Tote;
+import org.usfirst.frc1735.RecycleRush2015.commands.LifterGoto2ToteStep;
+import org.usfirst.frc1735.RecycleRush2015.commands.LifterGoto3ToteStep;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterGotoCarryContainer;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterGotoCarryTote;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterGotoContainer;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterGotoDrop;
+import org.usfirst.frc1735.RecycleRush2015.commands.LifterGotoDropStep;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterRatchetDisengage;
 import org.usfirst.frc1735.RecycleRush2015.commands.LifterRatchetEngage;
 import org.usfirst.frc1735.RecycleRush2015.commands.PokeExtend;
@@ -104,6 +108,13 @@ public class OI {
     public JoystickButton crabLeft;
     public JoystickButton crabRight;
     public Joystick rightJoystick;
+    public JoystickButton dropStack;
+    public JoystickButton liftAbove1Tote;
+    public JoystickButton liftAbove2Tote;
+    public JoystickButton liftContainerAbove1Tote;
+    public JoystickButton dropStackOnStep;
+    public JoystickButton liftAboveStepAnd1Tote;
+    public JoystickButton liftAboveStepand3Tote;
     public JoystickButton extendPoker;
     public JoystickButton retractPoker;
     public JoystickButton extendAntiAntiPoker;
@@ -125,6 +136,20 @@ public class OI {
         retractPoker.whenPressed(new PokeRetract());
         extendPoker = new JoystickButton(accessoryJoystick, 7);
         extendPoker.whenPressed(new PokeExtend());
+        liftAboveStepand3Tote = new JoystickButton(accessoryJoystick, 9);
+        liftAboveStepand3Tote.whenPressed(new LifterGoto3ToteStep());
+        liftAboveStepAnd1Tote = new JoystickButton(accessoryJoystick, 8);
+        liftAboveStepAnd1Tote.whenPressed(new LifterGoto1ToteStep());
+        dropStackOnStep = new JoystickButton(accessoryJoystick, 2);
+        dropStackOnStep.whenPressed(new LifterGotoDropStep());
+        liftContainerAbove1Tote = new JoystickButton(accessoryJoystick, 5);
+        liftContainerAbove1Tote.whenPressed(new LifterGotoContainer());
+        liftAbove2Tote = new JoystickButton(accessoryJoystick, 3);
+        liftAbove2Tote.whenPressed(new LifterGoto2Tote());
+        liftAbove1Tote = new JoystickButton(accessoryJoystick, 4);
+        liftAbove1Tote.whenPressed(new LifterGoto1Tote());
+        dropStack = new JoystickButton(accessoryJoystick, 1);
+        dropStack.whenPressed(new LifterGotoDrop());
         rightJoystick = new Joystick(1);
         
         crabRight = new JoystickButton(rightJoystick, 5);
@@ -139,9 +164,9 @@ public class OI {
         rollerIn.whileHeld(new CollectRollerIn());
         leftJoystick = new Joystick(0);
         
-        graspOutwards = new JoystickButton(leftJoystick, 5);
+        graspOutwards = new JoystickButton(leftJoystick, 4);
         graspOutwards.whileHeld(new CollectorGraspOut());
-        graspInwards = new JoystickButton(leftJoystick, 4);
+        graspInwards = new JoystickButton(leftJoystick, 5);
         graspInwards.whileHeld(new CollectorGraspIn());
 
 	    
@@ -154,6 +179,8 @@ public class OI {
 
         SmartDashboard.putData("Autonomous Grand Slam", new AutonomousGrandSlam());
 
+        SmartDashboard.putData("Autonomous Carry Container", new AutonomousCarryContainer());
+
         SmartDashboard.putData("Lifter Active Mode", new LifterActiveMode());
 
         SmartDashboard.putData("Lifter Active Disable", new LifterActiveDisable());
@@ -162,29 +189,11 @@ public class OI {
 
         SmartDashboard.putData("Lifter Ratchet Disengage", new LifterRatchetDisengage());
 
-        SmartDashboard.putData("Poke Extend", new PokeExtend());
-
-        SmartDashboard.putData("Poke Retract", new PokeRetract());
-
-        SmartDashboard.putData("Lifter Container Dead Reckoning", new LifterContainerDeadReckoning());
-
-        SmartDashboard.putData("Lifter 1Tote Dead Reckoning", new Lifter1ToteDeadReckoning());
-
-        SmartDashboard.putData("Lifter Drop Dead Reckoning", new LifterDropDeadReckoning());
-
-        SmartDashboard.putData("Lifter Goto Drop", new LifterGotoDrop());
+        SmartDashboard.putData("Lifter Goto Carry Container", new LifterGotoCarryContainer());
 
         SmartDashboard.putData("Lifter Goto Carry Tote", new LifterGotoCarryTote());
 
-        SmartDashboard.putData("Lifter Goto Carry Container", new LifterGotoCarryContainer());
-
-        SmartDashboard.putData("Lifter Goto 1Tote", new LifterGoto1Tote());
-
-        SmartDashboard.putData("Lifter Goto 1Tote Step", new LifterGoto1ToteStep());
-
-        SmartDashboard.putData("Lifter Goto 2Tote", new LifterGoto2Tote());
-
-        SmartDashboard.putData("Lifter Goto Container", new LifterGotoContainer());
+        SmartDashboard.putData("Lifter Goto 2Tote Step", new LifterGoto2ToteStep());
 
 
     // END AUTOGENERATED CODE, SOURCE=ROBOTBUILDER ID=CONSTRUCTORS

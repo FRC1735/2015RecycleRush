@@ -19,9 +19,9 @@ import org.usfirst.frc1735.RecycleRush2015.RobotMap;
 /**
  *
  */
-public class  LifterRatchetDisengage extends Command {
+public class  LifterGotoDropStep extends Command {
 
-    public LifterRatchetDisengage() {
+    public LifterGotoDropStep() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 
@@ -33,24 +33,42 @@ public class  LifterRatchetDisengage extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	setTimeout(2.5); // Sanity measure in case the pot goes crazy so we will eventually break out of the command...
+    	
+    	m_setpoint = 7.0;
+    	// Determine our direction of movement based on current position and setpoint.
+    	m_requiredDirectionMagnitude = Robot.lifter.calculateMagnitudeDirection(m_setpoint);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.lifter.ratchetDisengage();
+    	// Direction is precalculated based on whether are above or below the desired setpoint.
+    	Robot.lifter.liftWithLimits(m_requiredDirectionMagnitude, timeSinceInitialized()); // magnitude, currentTime
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+    	// Query the Tape Pot to see if we have reached our predetermined limit yet
+    	// 9 is lowest height, 3 is highest.
+    	double currentPosition = RobotMap.lifterLiftHeightPot.get();
+    	// We are finished if...
+    	return (isTimedOut() || Robot.lifter.lifterTargetReached(m_setpoint, currentPosition, m_requiredDirectionMagnitude));
+
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	Robot.lifter.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
+    
+    // Command local variables
+    double m_setpoint; // Desired position to reach
+    double m_requiredDirectionMagnitude; // Desired direction (calculated based on setpoint and current position at start of command)
+    
 }
