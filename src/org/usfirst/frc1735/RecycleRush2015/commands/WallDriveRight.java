@@ -35,7 +35,7 @@ public class  WallDriveRight extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.collectorRoller.wallDrive(0.7, 0.4); // side and forward
+    	//Robot.collectorRoller.wallDrive(0.7, 0.4); // side and forward
     }
 
     // Make this return true when this Command no longer needs to run execute()

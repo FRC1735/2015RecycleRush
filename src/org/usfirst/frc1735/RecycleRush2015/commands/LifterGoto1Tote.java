@@ -38,6 +38,10 @@ public class  LifterGoto1Tote extends Command {
     	m_setpoint = 6.8;
     	// Determine our direction of movement based on current position and setpoint.
     	m_requiredDirectionMagnitude = Robot.lifter.calculateMagnitudeDirection(m_setpoint);
+    	if (Robot.m_debugOn) {
+    		double currentPosition = RobotMap.lifterLiftHeightPot.get();
+    		System.out.println("1Tote called.  Current position is " + currentPosition + ", Setpoint is " + m_setpoint + ", and calculated magnitude is " + m_requiredDirectionMagnitude);
+    	}
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -60,8 +60,8 @@ public class DriveTrain extends Subsystem {
         if (Math.abs(driveRight) < Robot.m_joystickFilter) {driveRight = 0;}
         
         // Apply selective proportional reduction.
-        // If Driver Left Trigger is pressed, reduce speed to 33%
-        if (Robot.oi.leftJoystick.getRawButton(1)) {
+        // Unless the Driver Left Trigger is pressed, reduce speed by 33%
+        if (!Robot.oi.leftJoystick.getRawButton(1)) {
         	driveLeft = driveLeft * 0.6666;
         	driveRight = driveRight * 0.6666;
         }

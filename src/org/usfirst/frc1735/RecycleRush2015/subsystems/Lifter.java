@@ -118,7 +118,7 @@ public class Lifter extends PIDSubsystem {
         // HACK to allow use of CANTalon.  Above motor is not utilized.
         // PID debug, step one:  physically disable the pawl and directly control the motor until we get a basic PID tuning
         // TODO:  Comment this line out when we proceed to step two of the PID debug.
-        lifterMotorCAN.pidWrite(output);
+        //lifterMotorCAN.pidWrite(output);
         
         // Step two... we can't just directly move to the setpoint because of the ratchet.
         // So, use the a wrapper function that the joystick manual override can also (eventually) use.
@@ -176,7 +176,7 @@ public class Lifter extends PIDSubsystem {
         
         if (m_releasingRatchet && (currentTime <= m_liftWaitTime)) {
         	// Here we need to run the motor up to get the backpressure off the pawl
-        	lifterMotorCAN.set(1.0); 
+        	//lifterMotorCAN.set(1.0); 
         }
  
         // Wait a moment for the ratchet to get out of the way.
@@ -260,7 +260,7 @@ public class Lifter extends PIDSubsystem {
 /* No longer needed with piston
         if (m_releasingRatchet && currentTime <= m_liftWaitTime) {
         	// Here we need to run the motor up to get the backpressure off the pawl
-			lifterMotorCAN.set(1.0); // Motor magnitude is nonlinear, so 40% of full value is actually much less than that power-wise.        	
+			//lifterMotorCAN.set(1.0); // Motor magnitude is nonlinear, so 40% of full value is actually much less than that power-wise.        	
         }
 */        
         // Wait a moment for the ratchet pawl to get out of the way.
@@ -282,6 +282,7 @@ public class Lifter extends PIDSubsystem {
 	        	// Thus, clamp any negative magnitudes to some smaller (tunable) max so that we avoid this issue.
 	        	if (magnitude < -0.3333) { magnitude = -0.3333; }// Clamp downward motion to a max of this value
 	        	lifterMotorCAN.set(magnitude);
+	        	if (Robot.m_debugOn) {System.out.println("engaging lifter with magnitude = " + magnitude);}
 	        	// Alternate counter-based limit switch would need to reset the counter if moving in a direction away from the limit switch, e.g., 
 	        	//if (magnitude < 0) {highLimitCounter.reset()};
 	        }
