@@ -22,7 +22,7 @@ public class AutonomousCarryTote extends CommandGroup {
     	addSequential(new LifterGotoCarryTote());
     	
     	// And drive straight into the Auto Zone
-    	addSequential(new DriveWithLimits(3, 11, 0.75)); // args are seconds, feet, and power
+    	addSequential(new DriveWithLimits(3, 8.5, 0.75)); // args are seconds, feet, and power
 
     }
 }

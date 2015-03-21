@@ -198,8 +198,8 @@ public class Lifter extends PIDSubsystem {
 	        	  (!stoppedOrGoingUp && reachedLowLimit()))) {
 	        	// Here we are NOT asking to move higher, but the high limit is set... or lower, but the low limit is set... 
 	        	// So, we can move the motor.  Clamping of downward motion handled in the lifter's constructor.
-	    	    //Robot.lifter.setSetpoint(setpoint);
-	    	    //Robot.lifter.enable();
+	    	    Robot.lifter.setSetpoint(setpoint);
+	    	    Robot.lifter.enable();
 	        }
 	        // Otherwise, we have hit a limit switch and are requesting to go even further.
 	        // Ignore the request and just return.
@@ -238,10 +238,8 @@ public class Lifter extends PIDSubsystem {
         // if we are going up (or stopping!), engage the ratchet.
         // If we are going down, disengage the ratchet        // Negative Y values are joystick-forward.  Define that as "down".
         if (magnitude >= 0) {
-        	//if (magnitude > 0) {System.out.println("in liftWithLimits, magnitude >0");}
 	    	ratchetEngage();
 	    	m_heightPotTimeoutCounter = 0; // reset the counter that determines if we stalled going down
-    		SmartDashboard.putBoolean("Down Stall", false);
         }
 		else {
 			// Find out if the ratchet is currently engaged:
@@ -276,7 +274,6 @@ public class Lifter extends PIDSubsystem {
         // Note:  for going up, m_ratchetWaitTime will be either the constructor-time init value (0) or the last time we lowered... both of which will be less than the current time.
         if (currentTime >= m_ratchetWaitTime)
         {
-        	System.out.println("we are past ratchetWaitTime");
         	// Clear the flag.  we're done with waiting.
         	m_releasingRatchet = false;
 	        // finally, move the lifter directly.  Motor controller and joystick both work on -1..1 value range.
@@ -297,39 +294,35 @@ public class Lifter extends PIDSubsystem {
 	        	// we should stop the motor from going further down.
 	        	if (magnitude < 0) {
 	        		// Allow for some noise in the system.  Say, +/- 0.1...
-	        		double delta_low = m_lastHeightPotValue - 0.01 ; // relative to pot
-	        		double delta_high = m_lastHeightPotValue + 0.01;
-        			if (Robot.m_debugOn) {System.out.println("previous height = " + m_lastHeightPotValue + ", Current height = " + currentHeight + ", delta_low= " + delta_low + ", delta_high = " + delta_high);}
-	        		
+	        		double delta_low = m_lastHeightPotValue - 0.1 ; // relative to pot
+	        		double delta_high = m_lastHeightPotValue + 0.1;
 	        		if ((currentHeight > delta_low) && (currentHeight < delta_high)) {
 	        			// e.g. delta_low = 6.9
 	        			//      current = 7.0
 	        			//      delta_high = 7.1
 	        			// if > low and < high, we are within the noise margin of not having moved since the last polling interval.
 	        			m_heightPotTimeoutCounter++;
-	        			//currentHeight.if (Robot.m_debugOn) {System.out.println("Incrementing timeout.  New value = " + m_heightPotTimeoutCounter);}
 	        		}
 	        	} // if going down
 	        	
-	        	if (m_heightPotTimeoutCounter <= 3) {
+	        	if (m_heightPotTimeoutCounter <= 5) {
 	        		lifterMotorCAN.set(magnitude);
-	        		if (Robot.m_debugOn && (magnitude != 0)) {System.out.println("at time " + currentTime + " engaging lifter with magnitude = " + magnitude);}
+	        		if (Robot.m_debugOn) {System.out.println("engaging lifter with magnitude = " + magnitude);}
 	        		// Alternate counter-based limit switch would need to reset the counter if moving in a direction away from the limit switch, e.g., 
 	        		//if (magnitude < 0) {highLimitCounter.reset()};
 	        	}
 	        	else {
 	        		// otherwise we were moving down and the tape pot wasn't keeping pace.  Don't move the motor.
-	            	lifterMotorCAN.set(0);
-
-	            	// Also, put a big visual indicator on the screen to indicate the condition!
+	        		// Also, put a big visual indicator on the screen to indicate the condition!
 	        		SmartDashboard.putBoolean("Down Stall", true);
-	        		//System.out.println("at time " + currentTime + " Down Timeout reached!  Count = " + m_heightPotTimeoutCounter);
+	        		System.out.println("Down Timeout reached!  Count = " + m_heightPotTimeoutCounter);
 	        	}
 	        } // limitswitch check
 	        // Otherwise, we have hit a limit switch and are requesting to go even further.
 	        // Ignore the request and just return.
+	        // Update the value, but only if we were not in the ratchet wait time interval (where we aren't moving the motor!)
+			m_lastHeightPotValue = currentHeight; // save for next iteration
         } // Ratchet wait time
-		m_lastHeightPotValue = currentHeight; // save for next iteration
     }
     
     public boolean reachedHighLimit() {
@@ -381,11 +374,7 @@ public class Lifter extends PIDSubsystem {
 				((magnitudeDirection < 0 ) && currentPosition >= setpoint));  // if going down and have exceeded setpoint (bigger value means below)
     }
 
-    public void clearTimeouts() {
-    	m_liftWaitTime = 0;
-    	m_ratchetWaitTime = 0;
-    	m_releasingRatchet = false;
-    }
+
 // Storage for the end time of the ratchet delay wait
     double m_liftWaitTime;
     double m_ratchetWaitTime;

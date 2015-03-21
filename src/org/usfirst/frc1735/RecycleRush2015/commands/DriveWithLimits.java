@@ -85,7 +85,7 @@ public class  DriveWithLimits extends Command {
         double leftTravel = Math.abs(currentLeftDistance - m_leftStartDistance);
         double rightTravel = Math.abs(currentRightDistance - m_rightStartDistance);
         //System.out.println("m_distanceLimit = " + m_distanceLimit);
-        //System.out.println("R distance traveled is " + rightTravel + " and L distance traveled is " + rightTravel);
+        //System.out.println("R distance traveled is " + rightTravel + " and L distance traveled is " + leftTravel);
         boolean finished = (timedOut || (leftTravel > Math.abs(m_distanceLimit)) || (rightTravel > Math.abs(m_distanceLimit)));
         //System.out.println("isFinished returns status= " + finished);
         return finished;

@@ -42,6 +42,8 @@ public class  LifterGoto1Tote extends Command {
     		double currentPosition = RobotMap.lifterLiftHeightPot.get();
     		System.out.println("1Tote called.  Current position is " + currentPosition + ", Setpoint is " + m_setpoint + ", and calculated magnitude is " + m_requiredDirectionMagnitude);
     	}
+    	// Clear out the lifter timeouts in case that is causing our setpoint issues
+    	Robot.lifter.clearTimeouts();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -56,7 +58,9 @@ public class  LifterGoto1Tote extends Command {
     	// 9 is lowest height, 3 is highest.
     	double currentPosition = RobotMap.lifterLiftHeightPot.get();
     	// We are finished if...
-    	return (isTimedOut() || Robot.lifter.lifterTargetReached(m_setpoint, currentPosition, m_requiredDirectionMagnitude));
+    	boolean targetReached = Robot.lifter.lifterTargetReached(m_setpoint, currentPosition, m_requiredDirectionMagnitude);
+    	System.out.println ("targetReached = " + targetReached);
+    	return (isTimedOut() || targetReached);
 
     }
 
