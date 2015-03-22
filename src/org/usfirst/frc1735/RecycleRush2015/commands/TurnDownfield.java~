@@ -22,7 +22,7 @@ import org.usfirst.frc1735.RecycleRush2015.RobotMap;
 public class  TurnDownfield extends Command {
 
 	public TurnDownfield() {
-		this(1.35, 0.66); //Defaults for wheel distance and power (not direction)
+		this(1.75, 0.66); //Defaults for wheel distance and power (not direction)
 	}
 	public TurnDownfield(double distance) {
 		this(distance, 0.75); //pass distance; default for power

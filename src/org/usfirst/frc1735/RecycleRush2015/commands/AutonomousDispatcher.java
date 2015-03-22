@@ -88,6 +88,12 @@ public class  AutonomousDispatcher extends Command {
             main_p = main;
             main.start();
         }
+        // "Option 8" is to drive backwards into the Auto Zone pushing the container but not touching the yellow tote.
+        else if (Robot.AutoMode.getSelected().toString().equals("8")) {
+            AutonomousBackwards main = new AutonomousBackwards();
+            main_p = main;
+            main.start();
+        }
         else {
                 // Again, if we select '0' as an option we fall through the 'if' statements and do nothing.
         }

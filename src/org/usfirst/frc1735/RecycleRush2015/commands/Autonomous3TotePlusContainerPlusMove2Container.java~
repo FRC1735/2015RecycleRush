@@ -78,11 +78,11 @@ public class Autonomous3TotePlusContainerPlusMove2Container extends CommandGroup
 		// 14) Turn 90'
     	addSequential(new TurnDownfield());
 		// 15) Go forward into the Auto Zone
-    	addSequential(new DriveWithLimits(3, 11, 0.75)); // Time, Distance, speed   	
+    	addSequential(new DriveWithLimits(3, 8.5, 0.75)); // Time, Distance, speed   	
 		// 16) Drop stack
-    	addSequential(new LifterGotoDrop());
+    	//addSequential(new LifterGotoDrop());
 		// 17) Back up 2 feet
-    	addSequential(new DriveWithLimits(3, 2, -0.75));  // Time, Distance, speed
+    	//addSequential(new DriveWithLimits(3, 2, -0.75));  // Time, Distance, speed
     	// Done.
     }
 }

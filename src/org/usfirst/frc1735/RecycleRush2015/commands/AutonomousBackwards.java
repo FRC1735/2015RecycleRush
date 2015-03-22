@@ -15,14 +15,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class AutonomousCarryTote extends CommandGroup {
+public class AutonomousBackwards extends CommandGroup {
     
-    public  AutonomousCarryTote() {
-    	// Lift up just a enought to carry a tote
-    	addSequential(new LifterGotoCarryTote());
-    	
-    	// And drive straight into the Auto Zone
-    	addSequential(new DriveWithLimits(3, 8.5, 0.75)); // args are seconds, feet, and power
-
+    public  AutonomousBackwards() {
+    	// Drive backwards so we can push a recycling container without touching the yellow tote...
+    	addSequential(new DriveWithLimits(3, 7.5, -0.75)); // args are seconds, feet, and power
     }
 }

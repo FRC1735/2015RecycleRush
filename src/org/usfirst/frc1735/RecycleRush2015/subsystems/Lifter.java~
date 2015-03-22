@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.CANTalon;
 
 
@@ -77,6 +78,8 @@ public class Lifter extends PIDSubsystem {
         m_ratchetWaitTime = 0;
         m_liftWaitTime = 0;
         m_releasingRatchet = false;
+        m_heightPotTimeoutCounter = 0;
+        m_lastHeightPotValue = 8.5; // Assume pot was roughly at lowest position when program started.
         
     	// FOR PID subsystem use:
         // Downward rotation of the motor is faster than the lifter will fall, and we tend to get the rope all tangled up off the spooler.
@@ -118,7 +121,7 @@ public class Lifter extends PIDSubsystem {
         // HACK to allow use of CANTalon.  Above motor is not utilized.
         // PID debug, step one:  physically disable the pawl and directly control the motor until we get a basic PID tuning
         // TODO:  Comment this line out when we proceed to step two of the PID debug.
-        lifterMotorCAN.pidWrite(output);
+        //lifterMotorCAN.pidWrite(output);
         
         // Step two... we can't just directly move to the setpoint because of the ratchet.
         // So, use the a wrapper function that the joystick manual override can also (eventually) use.
@@ -176,7 +179,7 @@ public class Lifter extends PIDSubsystem {
         
         if (m_releasingRatchet && (currentTime <= m_liftWaitTime)) {
         	// Here we need to run the motor up to get the backpressure off the pawl
-        	lifterMotorCAN.set(1.0); 
+        	//lifterMotorCAN.set(1.0); 
         }
  
         // Wait a moment for the ratchet to get out of the way.
@@ -195,8 +198,8 @@ public class Lifter extends PIDSubsystem {
 	        	  (!stoppedOrGoingUp && reachedLowLimit()))) {
 	        	// Here we are NOT asking to move higher, but the high limit is set... or lower, but the low limit is set... 
 	        	// So, we can move the motor.  Clamping of downward motion handled in the lifter's constructor.
-	    	    Robot.lifter.setSetpoint(setpoint);
-	    	    Robot.lifter.enable();
+	    	    //Robot.lifter.setSetpoint(setpoint);
+	    	    //Robot.lifter.enable();
 	        }
 	        // Otherwise, we have hit a limit switch and are requesting to go even further.
 	        // Ignore the request and just return.
@@ -229,11 +232,16 @@ public class Lifter extends PIDSubsystem {
     
     // NON-PID function for controlling the lifter
     public void liftWithLimits(double magnitude, double currentTime) {
+    	double currentHeight = liftHeightPot.get(); // Used for downward timeout counter
+    	
         // Handle the ratchet pawl
         // if we are going up (or stopping!), engage the ratchet.
         // If we are going down, disengage the ratchet        // Negative Y values are joystick-forward.  Define that as "down".
         if (magnitude >= 0) {
+        	//if (magnitude > 0) {System.out.println("in liftWithLimits, magnitude >0");}
 	    	ratchetEngage();
+	    	m_heightPotTimeoutCounter = 0; // reset the counter that determines if we stalled going down
+    		SmartDashboard.putBoolean("Down Stall", false);
         }
 		else {
 			// Find out if the ratchet is currently engaged:
@@ -260,7 +268,7 @@ public class Lifter extends PIDSubsystem {
 /* No longer needed with piston
         if (m_releasingRatchet && currentTime <= m_liftWaitTime) {
         	// Here we need to run the motor up to get the backpressure off the pawl
-			lifterMotorCAN.set(1.0); // Motor magnitude is nonlinear, so 40% of full value is actually much less than that power-wise.        	
+			//lifterMotorCAN.set(1.0); // Motor magnitude is nonlinear, so 40% of full value is actually much less than that power-wise.        	
         }
 */        
         // Wait a moment for the ratchet pawl to get out of the way.
@@ -268,6 +276,7 @@ public class Lifter extends PIDSubsystem {
         // Note:  for going up, m_ratchetWaitTime will be either the constructor-time init value (0) or the last time we lowered... both of which will be less than the current time.
         if (currentTime >= m_ratchetWaitTime)
         {
+        	System.out.println("we are past ratchetWaitTime");
         	// Clear the flag.  we're done with waiting.
         	m_releasingRatchet = false;
 	        // finally, move the lifter directly.  Motor controller and joystick both work on -1..1 value range.
@@ -281,13 +290,46 @@ public class Lifter extends PIDSubsystem {
 	        	// Downward rotation of the motor is faster than the lifter will fall, and we tend to get the rope all tangled up off the spooler.
 	        	// Thus, clamp any negative magnitudes to some smaller (tunable) max so that we avoid this issue.
 	        	if (magnitude < -0.3333) { magnitude = -0.3333; }// Clamp downward motion to a max of this value
-	        	lifterMotorCAN.set(magnitude);
-	        	// Alternate counter-based limit switch would need to reset the counter if moving in a direction away from the limit switch, e.g., 
-	        	//if (magnitude < 0) {highLimitCounter.reset()};
-	        }
+	        	
+	        	// Next problem:  If the lifter arm hits an obstacle (like, say, a misaligned tote) the motor will continue to 
+	        	// unspool and the rope will STILL unspool and tangle.
+	        	// So, check whether the tape pot has moved since the last N polling intervals.  If it hasn't, then
+	        	// we should stop the motor from going further down.
+	        	if (magnitude < 0) {
+	        		// Allow for some noise in the system.  Say, +/- 0.1...
+	        		double delta_low = m_lastHeightPotValue - 0.01 ; // relative to pot
+	        		double delta_high = m_lastHeightPotValue + 0.01;
+        			if (Robot.m_debugOn) {System.out.println("previous height = " + m_lastHeightPotValue + ", Current height = " + currentHeight + ", delta_low= " + delta_low + ", delta_high = " + delta_high);}
+	        		
+	        		if ((currentHeight > delta_low) && (currentHeight < delta_high)) {
+	        			// e.g. delta_low = 6.9
+	        			//      current = 7.0
+	        			//      delta_high = 7.1
+	        			// if > low and < high, we are within the noise margin of not having moved since the last polling interval.
+	        			m_heightPotTimeoutCounter++;
+	        			//currentHeight.if (Robot.m_debugOn) {System.out.println("Incrementing timeout.  New value = " + m_heightPotTimeoutCounter);}
+	        		}
+	        	} // if going down
+	        	
+	        	if (m_heightPotTimeoutCounter <= 3) {
+	        		lifterMotorCAN.set(magnitude);
+	        		if (Robot.m_debugOn && (magnitude != 0)) {System.out.println("at time " + currentTime + " engaging lifter with magnitude = " + magnitude);}
+	        		// Alternate counter-based limit switch would need to reset the counter if moving in a direction away from the limit switch, e.g., 
+	        		//if (magnitude < 0) {highLimitCounter.reset()};
+	        	}
+	        	else {
+	        		// otherwise we were moving down and the tape pot wasn't keeping pace.  Don't move the motor.
+	            	lifterMotorCAN.set(0);
+
+	            	// Also, put a big visual indicator on the screen to indicate the condition!
+	        		SmartDashboard.putBoolean("Down Stall", true);
+	        		//System.out.println("at time " + currentTime + " Down Timeout reached!  Count = " + m_heightPotTimeoutCounter);
+	        	}
+	        } // limitswitch check
 	        // Otherwise, we have hit a limit switch and are requesting to go even further.
 	        // Ignore the request and just return.
-        }
+        } // Ratchet wait time
+		m_lastHeightPotValue = currentHeight; // save for next iteration
     }
     
     public boolean reachedHighLimit() {
@@ -339,10 +381,16 @@ public class Lifter extends PIDSubsystem {
 				((magnitudeDirection < 0 ) && currentPosition >= setpoint));  // if going down and have exceeded setpoint (bigger value means below)
     }
 
-
+    public void clearTimeouts() {
+    	m_liftWaitTime = 0;
+    	m_ratchetWaitTime = 0;
+    	m_releasingRatchet = false;
+    }
 // Storage for the end time of the ratchet delay wait
     double m_liftWaitTime;
     double m_ratchetWaitTime;
     boolean m_releasingRatchet;
+    double m_heightPotTimeoutCounter;
+    double m_lastHeightPotValue;
     
 }

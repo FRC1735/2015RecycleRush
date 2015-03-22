@@ -38,11 +38,11 @@ public class AutonomousGrandSlam extends CommandGroup {
 	// 5) Now turn downfield...
 	addSequential(new TurnDownfield());
 	// 6) Drive into the Auto Zone
-	addSequential(new DriveWithLimits(5, 11, 0.75)); // Time, Distance, speed.
+	addSequential(new DriveWithLimits(5, 8.5, 0.75)); // Time, Distance, speed.
 	// 7) and spit it out!
 	addSequential(new CollectRollerOut(2));
 	// 8) Drive back to the tote line
-	addSequential(new DriveWithLimits(5, 11, -0.75)); // Time, Distance, speed.	
+	addSequential(new DriveWithLimits(5,8.5, -0.75)); // Time, Distance, speed.	
 	// 9) Turn back towards the totes
 	addSequential(new TurnInfield());	
 	
@@ -63,11 +63,11 @@ public class AutonomousGrandSlam extends CommandGroup {
 	// 12) Now turn downfield...
 	addSequential(new TurnDownfield());
 	// 13) Drive into the Auto Zone
-	addSequential(new DriveWithLimits(5, 11, 0.75)); // Time, Distance, speed.
+	addSequential(new DriveWithLimits(5, 8.5, 0.75)); // Time, Distance, speed.
 	// 14) and spit it out!
 	addSequential(new CollectRollerOut(2));
 	// 15) Drive back to the tote line
-	addSequential(new DriveWithLimits(5, 11, -0.75)); // Time, Distance, speed.	
+	addSequential(new DriveWithLimits(5,8.5, -0.75)); // Time, Distance, speed.	
 	// 16a) Turn back towards the totes
 	addSequential(new TurnInfield());	
 	
@@ -86,7 +86,7 @@ public class AutonomousGrandSlam extends CommandGroup {
 	// 18) Turn 90'
 	addSequential(new TurnDownfield());
 	// 19) Go forward into the Auto Zone
-	addSequential(new DriveWithLimits(3, 11, 0.75)); // Time, Distance, speed   	
+	addSequential(new DriveWithLimits(3, 8.5, 0.75)); // Time, Distance, speed   	
 	// 20) Drop stack
 	addSequential(new LifterGotoDrop());
 	// 21) Back up 2 feet

@@ -206,6 +206,7 @@ public class OI {
         Robot.AutoMode.addObject("Grand Slam", "5");           // Score all three totes plus all three containers plus ourselves
         Robot.AutoMode.addObject("Carry Tote and Go", "6");       // Lift tote a tiny bit and they drive forward to the Auto Zone.
         Robot.AutoMode.addObject("Carry Container and Go", "7");  // Lift container a tiny bit and they drive forward to the Auto Zone.
+        Robot.AutoMode.addObject("Go Backwards", "8");          // Drive backwards into the Auto Zone.  Used to push the recycling container without touching the yellow tote.
         SmartDashboard.putData("Automode", Robot.AutoMode);
         
         

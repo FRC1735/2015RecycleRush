@@ -17,6 +17,7 @@ import org.usfirst.frc1735.RecycleRush2015.commands.AntiAntiPokerRetract;
 import org.usfirst.frc1735.RecycleRush2015.commands.Autonomous1TotePlusContainer;
 import org.usfirst.frc1735.RecycleRush2015.commands.Autonomous3TotePlusContainer;
 import org.usfirst.frc1735.RecycleRush2015.commands.Autonomous3TotePlusContainerPlusMove2Container;
+import org.usfirst.frc1735.RecycleRush2015.commands.AutonomousCarryContainer;
 import org.usfirst.frc1735.RecycleRush2015.commands.AutonomousCommand;
 import org.usfirst.frc1735.RecycleRush2015.commands.AutonomousDispatcher;
 import org.usfirst.frc1735.RecycleRush2015.commands.AutonomousGrandSlam;
@@ -178,6 +179,8 @@ public class OI {
 
         SmartDashboard.putData("Autonomous Grand Slam", new AutonomousGrandSlam());
 
+        SmartDashboard.putData("Autonomous Carry Container", new AutonomousCarryContainer());
+
         SmartDashboard.putData("Lifter Active Mode", new LifterActiveMode());
 
         SmartDashboard.putData("Lifter Active Disable", new LifterActiveDisable());
@@ -185,16 +188,6 @@ public class OI {
         SmartDashboard.putData("Lifter Ratchet Engage", new LifterRatchetEngage());
 
         SmartDashboard.putData("Lifter Ratchet Disengage", new LifterRatchetDisengage());
-
-        SmartDashboard.putData("Poke Extend", new PokeExtend());
-
-        SmartDashboard.putData("Poke Retract", new PokeRetract());
-
-        SmartDashboard.putData("Lifter Container Dead Reckoning", new LifterContainerDeadReckoning());
-
-        SmartDashboard.putData("Lifter 1Tote Dead Reckoning", new Lifter1ToteDeadReckoning());
-
-        SmartDashboard.putData("Lifter Drop Dead Reckoning", new LifterDropDeadReckoning());
 
         SmartDashboard.putData("Lifter Goto Carry Container", new LifterGotoCarryContainer());
 
@@ -207,12 +200,12 @@ public class OI {
         // This code adds a selectable object to select which Autonomous mode we wish to invoke:
         Robot.AutoMode.addObject("Do Nothing", "0"); 		   // In the rare case we want/need to disable Autonomous operation
         Robot.AutoMode.addObject("Robot Set", "1");           // DEFAULT: Perform a Robot Set by driving forward to the Auto zone
-        Robot.AutoMode.addObject("1Tote Plus Container", "2"); // Score our tote plus our container plus ourselves
+        Robot.AutoMode.addDefault("1Tote Plus Container", "2"); // Score our tote plus our container plus ourselves
         Robot.AutoMode.addObject("3Tote Plus Container", "3"); // Score all three totes plus our container plus ourselves
         Robot.AutoMode.addObject("3Tote Plus Container Plus Move 2Container", "4"); // Score all three totes plus our container plus ourselves, and also move the other containers out of the way
         Robot.AutoMode.addObject("Grand Slam", "5");           // Score all three totes plus all three containers plus ourselves
         Robot.AutoMode.addObject("Carry Tote and Go", "6");       // Lift tote a tiny bit and they drive forward to the Auto Zone.
-        Robot.AutoMode.addDefault("Carry Container and Go", "7");  // Lift container a tiny bit and they drive forward to the Auto Zone.
+        Robot.AutoMode.addObject("Carry Container and Go", "7");  // Lift container a tiny bit and they drive forward to the Auto Zone.
         SmartDashboard.putData("Automode", Robot.AutoMode);
         
         

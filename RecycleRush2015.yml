@@ -904,6 +904,12 @@ Children:
 - Name: Commands
   Base: Commands
   Children:
+  - Name: Autonomous Backwards
+    Base: Command Group
+    Children: []
+    Properties:
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: false}
   - Name: Autonomous Dispatcher
     Base: Command
     Children: []
