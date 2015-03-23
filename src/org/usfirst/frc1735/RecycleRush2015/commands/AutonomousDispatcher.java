@@ -34,7 +34,7 @@ public class  AutonomousDispatcher extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	// "Option 0" is to "do nothing" in the list.  Handled by falling through the 'if' statements and doing none of them.
+    	// "Option 0" is to "do nothing".  Put this as the 'else' to catch other weird cases.    	
     	
     	// "Option 1" is to drive forward into the Auto Zone and then stop (a "Robot Set")
         if (Robot.AutoMode.getSelected().toString().equals("1")) {
@@ -94,8 +94,11 @@ public class  AutonomousDispatcher extends Command {
             main_p = main;
             main.start();
         }
-        else {
-                // Again, if we select '0' as an option we fall through the 'if' statements and do nothing.
+    	//We actually call Delay as a placeholder for this
+        else { // Assumes (Robot.AutoMode.getSelected().toString().equals("0"))  but could be anything out of bounds too
+            Delay main = new Delay(1); // Wait one second.
+            main_p = main;
+            main.start();
         }
     }
 

@@ -20,9 +20,11 @@ public class AutonomousCarryContainer extends CommandGroup {
     public  AutonomousCarryContainer() {
     	// Lift up just a enought to carry a tote
     	addSequential(new LifterGotoCarryContainer());
-    	
+    	// For eliminations to get RC out of the way of team 1100:
+    	addSequential(new TurnDownfield(1.2, 0.66));
+    	    	
     	// And drive straight into the Auto Zone
-    	addSequential(new DriveWithLimits(3, 8.5, 0.75)); // args are seconds, feet, and power
+    	addSequential(new DriveWithLimits(3, 7.5, 0.75)); // args are seconds, feet, and power
 
     }
 }
