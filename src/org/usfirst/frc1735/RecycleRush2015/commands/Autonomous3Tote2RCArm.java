@@ -25,6 +25,10 @@ public class Autonomous3Tote2RCArm extends CommandGroup {
     	// 3)    Drive forward enough to grab the rightmost tote 	
     	addSequential(new DriveWithLimits(3, 1.5, 0.5)); // Time, Distance, speed
     	addSequential(new LifterGotoDrop());
+    	// Wiggle a little bit
+    	addSequential(new TurnInfield(0.05));
+    	addSequential(new TurnDownfield(0.08));
+    	addSequential(new Delay(0.3));
     	addSequential(new LifterGoto1Tote());
 
     	// Now we have our container and our tote.
@@ -32,15 +36,18 @@ public class Autonomous3Tote2RCArm extends CommandGroup {
     	// 4) Turn around 180 degrees
     	addSequential(new TurnAroundCCW()); // optional args are distance, power.
     	// 5) drive forward to surround the middle tote and pick it
-    	addSequential(new DriveWithLimits(5, 4.5, 0.5)); //time, distance, speed
+    	addSequential(new DriveWithLimits(5, 4.5, 0.55)); //time, distance, speed
     	addSequential(new LifterGotoDrop());
+    	// Wiggle a little bit
+    	addSequential(new TurnInfield(0.05));
+    	addSequential(new TurnDownfield(0.08));
     	addSequential(new LifterGoto1Tote());
     	// 6) grab the RC that is in front of us (the middle one)
-    	addParallel(new RCArmLeftUp());
-    	addSequential(new RCArmRightUp());
+    	///addParallel(new RCArmLeftUp());
+    	///addSequential(new RCArmRightUp());
     	
     	// 7) Get the third tote
-    	addSequential(new DriveWithLimits(3.5, 8.85, 0.5));  // Time, Distance, speed
+    	addSequential(new DriveWithLimits(4, 5.5, 0.55));  // Time, Distance, speed
     	addSequential(new LifterGotoDrop());
     	addSequential(new LifterGotoCarryTote());
  
@@ -49,14 +56,14 @@ public class Autonomous3Tote2RCArm extends CommandGroup {
 		// 8) Turn 90'
     	addSequential(new TurnInfield()); //infield is right.  Opt args distance, power
 		// 9) Go forward into the Auto Zone
-    	addSequential(new DriveWithLimits(3, 8.5, 0.6666)); // Time, Distance, speed
+    	///addSequential(new DriveWithLimits(3, 8.5, 0.6666)); // Time, Distance, speed
     	// 10) Drop the RC
-    	addParallel(new RCArmLeftDown());
-    	addSequential(new RCArmRightDown());
+    	///addParallel(new RCArmLeftDown());
+    	///addSequential(new RCArmRightDown());
 		// 11) Drop stack
-    	addSequential(new LifterGotoDrop());
+    	///addSequential(new LifterGotoDrop());
 		// 12) Back up 2 feet
-    	addSequential(new DriveWithLimits(3, 2, -0.75));  // Time, Distance, speed
+    	///addSequential(new DriveWithLimits(3, 2, -0.75));  // Time, Distance, speed
     	// Done.
     	
     	

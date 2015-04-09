@@ -238,6 +238,7 @@ public class Lifter extends PIDSubsystem {
         // if we are going up (or stopping!), engage the ratchet.
         // If we are going down, disengage the ratchet        // Negative Y values are joystick-forward.  Define that as "down".
         if (magnitude >= 0) {
+    	//if (Math.abs(magnitude) < 0.1 ) {
         	//if (magnitude > 0) {System.out.println("in liftWithLimits, magnitude >0");}
 	    	ratchetEngage();
 	    	m_heightPotTimeoutCounter = 0; // reset the counter that determines if we stalled going down

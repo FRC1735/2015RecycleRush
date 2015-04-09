@@ -66,15 +66,15 @@ public class  DriveWithLimits extends Command {
             	// If the error is greater than 0.1 (our assumed tolerance), then we need to compensate
             	if (leftTravel > rightTravel) {
             		// if left is farther, back it off by a percentage of the total error
-            		leftMagnitudeDirection  = leftMagnitudeDirection  * (1-(0.5 * travelError));
+            		leftMagnitudeDirection  = leftMagnitudeDirection  * (1-(0.2 * travelError));
             	}
             	else {
-            		rightMagnitudeDirection = rightMagnitudeDirection * (1-(0.5 * travelError));
+            		rightMagnitudeDirection = rightMagnitudeDirection * (1-(0.2 * travelError));
             	}
             } // end if (travelError)
     	} // end if (m_enableDriveCompensation)
     	//System.out.println("driving with L= " + leftMagnitudeDirection + ", R= " + rightMagnitudeDirection);
-    	Robot.driveTrain.tankDrive(leftMagnitudeDirection,  rightMagnitudeDirection);
+    	Robot.driveTrain.tankDrive(0.995*leftMagnitudeDirection, rightMagnitudeDirection);
     }
 
     // Make this return true when this Command no longer needs to run execute()

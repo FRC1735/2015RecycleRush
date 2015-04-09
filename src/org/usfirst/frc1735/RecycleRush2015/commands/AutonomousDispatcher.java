@@ -95,7 +95,7 @@ public class  AutonomousDispatcher extends Command {
             main.start();
         }
         // "Option 9" is to get 3 totes plus 2 RCs (one initially in lifter, one via new RC arms
-        else if (Robot.AutoMode.getSelected().toString().equals("8")) {
+        else if (Robot.AutoMode.getSelected().toString().equals("9")) {
             Autonomous3Tote2RCArm main = new Autonomous3Tote2RCArm();
             main_p = main;
             main.start();

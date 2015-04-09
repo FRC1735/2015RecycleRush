@@ -94,6 +94,12 @@ public class  AutonomousDispatcher extends Command {
             main_p = main;
             main.start();
         }
+        // "Option 9" is to get 3 totes plus 2 RCs (one initially in lifter, one via new RC arms
+        else if (Robot.AutoMode.getSelected().toString().equals("9")) {
+            Autonomous3Tote2RCArm main = new Autonomous3Tote2RCArm();
+            main_p = main;
+            main.start();
+        }
     	//We actually call Delay as a placeholder for this
         else { // Assumes (Robot.AutoMode.getSelected().toString().equals("0"))  but could be anything out of bounds too
             Delay main = new Delay(1); // Wait one second.

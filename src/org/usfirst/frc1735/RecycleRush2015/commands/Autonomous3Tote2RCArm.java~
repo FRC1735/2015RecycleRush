@@ -18,21 +18,48 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class Autonomous3Tote2RCArm extends CommandGroup {
     
     public  Autonomous3Tote2RCArm() {
-        // Add Commands here:
-        // e.g. addSequential(new Command1());
-        //      addSequential(new Command2());
-        // these will run in order.
+    	// The Plan:
+    	// 1) Start with robot surrounding the rightmost container, facing right from DS perspective
+    	// 2) Lift container
+    	addSequential(new LifterGotoContainer());
+    	// 3)    Drive forward enough to grab the rightmost tote 	
+    	addSequential(new DriveWithLimits(3, 1.5, 0.5)); // Time, Distance, speed
+    	addSequential(new LifterGotoDrop());
+    	addSequential(new Delay(0.3));
+    	addSequential(new LifterGoto1Tote());
 
-        // To run multiple commands at the same time,
-        // use addParallel()
-        // e.g. addParallel(new Command1());
-        //      addSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
-
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
+    	// Now we have our container and our tote.
+    	// Get everyone else's totes and one of the remaining containers
+    	// 4) Turn around 180 degrees
+    	addSequential(new TurnAroundCCW()); // optional args are distance, power.
+    	// 5) drive forward to surround the middle tote and pick it
+    	///addSequential(new DriveWithLimits(5, 4.5, 0.5)); //time, distance, speed
+    	///addSequential(new LifterGotoDrop());
+    	///addSequential(new LifterGoto1Tote());
+    	// 6) grab the RC that is in front of us (the middle one)
+    	///addParallel(new RCArmLeftUp());
+    	///addSequential(new RCArmRightUp());
+    	
+    	// 7) Get the third tote
+    	///addSequential(new DriveWithLimits(3.5, 8.85, 0.5));  // Time, Distance, speed
+    	///addSequential(new LifterGotoDrop());
+    	///addSequential(new LifterGotoCarryTote());
+ 
+    	// If all goes well, we now have an RC and a 3-tote stack, with another RC on the arms.
+    	// Head for the Auto Zone
+		// 8) Turn 90'
+    	///addSequential(new TurnInfield()); //infield is right.  Opt args distance, power
+		// 9) Go forward into the Auto Zone
+    	///addSequential(new DriveWithLimits(3, 8.5, 0.6666)); // Time, Distance, speed
+    	// 10) Drop the RC
+    	///addParallel(new RCArmLeftDown());
+    	///addSequential(new RCArmRightDown());
+		// 11) Drop stack
+    	///addSequential(new LifterGotoDrop());
+		// 12) Back up 2 feet
+    	///addSequential(new DriveWithLimits(3, 2, -0.75));  // Time, Distance, speed
+    	// Done.
+    	
+    	
     }
 }

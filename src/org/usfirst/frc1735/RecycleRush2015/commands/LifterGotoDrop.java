@@ -36,7 +36,7 @@ public class  LifterGotoDrop extends Command {
     protected void initialize() {
     	setTimeout(2.5); // Sanity measure in case the pot goes crazy so we will eventually break out of the command...
     	
-    	m_setpoint = 9.3;
+    	m_setpoint = 9.5;
     	// Determine our direction of movement based on current position and setpoint.
     	m_requiredDirectionMagnitude = Robot.lifter.calculateMagnitudeDirection(m_setpoint);
     	// Clear out the lifter timeouts in case that is causing our setpoint issues
