@@ -22,7 +22,7 @@ import org.usfirst.frc1735.RecycleRush2015.RobotMap;
 public class  TurnAroundCCW extends Command {
 
     public TurnAroundCCW() {
-		this(3.45, 0.66); //Defaults for wheel distance and power (not direction) 3.25 too much, 3.1 not enough
+		this(3.5, 0.66); //Defaults for wheel distance and power (not direction) 3.25 too much, 3.1 not enough
 	}
     public TurnAroundCCW(double distance) {
     	this(distance, 0.66); //distance, default for power
@@ -49,7 +49,7 @@ public class  TurnAroundCCW extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	// Turn left/CCW:
-    	Robot.driveTrain.tankDrive(-m_magnitudeDirection,  0.98*m_magnitudeDirection);
+    	Robot.driveTrain.tankDrive(-m_magnitudeDirection,  0.97*m_magnitudeDirection);
     }
 
     // Make this return true when this Command no longer needs to run execute()

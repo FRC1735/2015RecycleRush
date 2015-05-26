@@ -34,7 +34,7 @@ public class  AutonomousDispatcher extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	// "Option 0" is to "do nothing".  Put this as the 'else' to catch other weird cases.    	
+    	// "Option 0" is to "do nothing" in the list.  Handled by falling through the 'if' statements and doing none of them.
     	
     	// "Option 1" is to drive forward into the Auto Zone and then stop (a "Robot Set")
         if (Robot.AutoMode.getSelected().toString().equals("1")) {

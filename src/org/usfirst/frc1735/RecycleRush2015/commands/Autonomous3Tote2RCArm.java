@@ -36,7 +36,7 @@ public class Autonomous3Tote2RCArm extends CommandGroup {
     	// 4) Turn around 180 degrees
     	addSequential(new TurnAroundCCW()); // optional args are distance, power.
     	// 5) drive forward to surround the middle tote and pick it
-    	addSequential(new DriveWithLimits(5, 4.5, 0.55)); //time, distance, speed
+    	addSequential(new DriveWithLimits(5, 5, 0.55)); //time, distance, speed
     	addSequential(new LifterGotoDrop());
     	// Wiggle a little bit
     	addSequential(new TurnInfield(0.05));

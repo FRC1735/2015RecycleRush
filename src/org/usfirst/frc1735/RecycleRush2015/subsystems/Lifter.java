@@ -275,7 +275,8 @@ public class Lifter extends PIDSubsystem {
         // Wait a moment for the ratchet pawl to get out of the way.
         // Get the current count, and continue only if we are far enough beyond it.
         // Note:  for going up, m_ratchetWaitTime will be either the constructor-time init value (0) or the last time we lowered... both of which will be less than the current time.
-        if (currentTime >= m_ratchetWaitTime)
+//        if (currentTime >= m_ratchetWaitTime)
+        if (true) // The initialization of m_ratcheWaitTime is getting large single-digit seconds now.  Piston is so fast we don't need to wait, so comment it out.
         {
         	System.out.println("we are past ratchetWaitTime");
         	// Clear the flag.  we're done with waiting.
